@@ -1,73 +1,70 @@
-
 <!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BİZ ❤️</title>
-<style>
-*{box-sizing:border-box}
-body{
-margin:0;min-height:100vh;
-font-family:Arial,sans-serif;
-background:linear-gradient(145deg,#210b22,#701b4c,#d44d7c);
-color:white;display:flex;align-items:center;
-justify-content:center;padding:20px;
-}
-.card{
-width:100%;max-width:420px;
-background:#ffffff18;
-border:1px solid #ffffff40;
-border-radius:28px;padding:28px;
-text-align:center;backdrop-filter:blur(12px);
-}
-h1{font-size:52px;margin:10px}
-p{color:#ffe0ed}
-input,button{
-width:100%;padding:16px;margin-top:13px;
-border:0;border-radius:14px;font-size:16px;
-}
-input{text-align:center}
-button{
-background:#ffb5d0;color:#541332;
-font-weight:bold;cursor:pointer;
-}
-button:active{transform:scale(.97)}
-#result{margin-top:20px;font-size:18px}
-.heart{font-size:35px}
-</style>
-</head>
-<body>
-<div class="card">
-<div class="heart">💕</div>
-<h1>BİZ</h1>
-<p>İki kalp, tek oyun...</p>
-<p>Birbirimizi ne kadar tanıyoruz?</p>
-
-<input id="name" placeholder="Senin adın">
-<button onclick="createRoom()">❤️ Oda oluştur</button>
-
+<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Biz 💕 Cezalı Oyun</title><script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>body{margin:0;font-family:sans-serif;background:linear-gradient(#ff5e8a,#a1004d);color:#fff;display:flex;justify-content:center;min-height:100vh} .box{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);margin:20px auto;padding:24px;border-radius:24px;width:90%;max-width:400px;text-align:center} input,button{width:100%;padding:13px;margin:7px 0;border:0;border-radius:14px;font-size:16px} button{background:#fff;color:#d6005c;font-weight:bold} .pembe{background:#ffb3cd} .ceza{background:#ffe600;color:#000;font-weight:bold} h1{font-size:42px;margin:5px} .soru{font-size:21px;margin:18px 0} .bolum{background:#fff;color:#d6005c;padding:6px 12px;border-radius:20px;font-weight:bold;display:inline-block}</style></head>
+<body><div class="box">
+<h1>💕 BİZ</h1><p>İki kalp, tek oyun - CEZALI VERSİYON 😏</p>
+<div id="lobi">
+<input id="isim" placeholder="İsmin (örn: Gökdeniz)">
+<button onclick="olustur()">❤️ Oda oluştur</button>
 <p>VEYA</p>
-<input id="code" placeholder="6 haneli oda kodu">
-<button onclick="joinRoom()">💌 Odaya katıl</button>
-
-<div id="result"></div>
+<input id="kodGir" placeholder="Oda kodu">
+<button class="pembe" onclick="katil()">💌 Odaya katıl</button>
 </div>
-
+<div id="bekle" style="display:none"><h2 id="bekleYazi">Bekleniyor...</h2><p id="oyuncular"></p><button id="baslatBtn" style="display:none" onclick="baslat()">Oyunu Başlat ▶️</button></div>
+<div id="oyun" style="display:none"><span class="bolum" id="bolum"></span><div class="soru" id="soru"></div><div id="secenekler"></div><p id="skor"></p><p id="ilerleme"></p></div>
+</div>
 <script>
-function createRoom(){
-let name=document.getElementById("name").value;
-if(!name){alert("Önce adını yaz ❤️");return;}
-let code=Math.floor(100000+Math.random()*900000);
-document.getElementById("result").innerHTML=
-"❤️ Merhaba "+name+"!<br>Oda kodun: <b>"+code+"</b><br>Bu kodu sevgiline gönder!";
-}
-function joinRoom(){
-let code=document.getElementById("code").value;
-if(code.length!==6){alert("6 haneli kod gir ❤️");return;}
-document.getElementById("result").innerHTML=
-"💕 Oda kodun: "+code+"<br>Online bağlantıyı birazdan ekleyeceğiz!";
-}
-</script>
-</body>
-</html>
+let peer, conn, benimIsim, benHost=false, kodum="";
+let bolumler=[
+{ad:"1. BÖLÜM: TANIŞMA", sorular:[
+{q:"Gökdeniz en çok neyi sever?",a:["Tatlı","Oyun","Uyku","Hepsi"]},
+{q:"İlk buluşmada ne hissettin?",a:["Heyecan","Mutluluk","Utanç","Hepsi"]},
+{q:"En sevdiğiniz yemek?",a:["Pizza","Mantı","Kebap","Makarna"]},
+{q:"Birlikte nereye gitmek istersin?",a:["Deniz","Dağ","Paris","Evde film"]},
+{q:"Gökdeniz ne zaman kızar?",a:["Acıkınca","Yorulunca","İlgisizlikte","Hiç kızmaz"]}]},
+{ad:"2. BÖLÜM: KİM DAHA ÇOK?", sorular:[
+{q:"Kim daha kıskanç?",a:["Gökdeniz","Sevgilim","İkimiz de","Hiçbirimiz"]},
+{q:"Kim daha çok uyur?",a:["Gökdeniz","Sevgilim","İkimiz de","Belli olmaz"]},
+{q:"Kim daha çok yemek yer?",a:["Gökdeniz","Sevgilim","İkimiz de","Eşitiz"]},
+{q:"Kim daha çok trip atar?",a:["Gökdeniz","Sevgilim","İkimiz de","Asla"]},
+{q:"Kim daha çok özler?",a:["Gökdeniz","Sevgilim","İkimiz de","Çok özleriz"]}]},
+{ad:"3. BÖLÜM: DOĞRU MU YANLIŞ MI?", sorular:[
+{q:"Gökdeniz sabah insanı değildir. Doğru mu?",a:["Doğru","Yanlış"]},
+{q:"Sevgilim dizi izlerken uyuyakalır. Doğru mu?",a:["Doğru","Yanlış"]},
+{q:"İkiniz de tatlıyı çok seversiniz. Doğru mu?",a:["Doğru","Yanlış"]},
+{q:"Gökdeniz asla kıskanmaz. Doğru mu?",a:["Doğru","Yanlış"]},
+{q:"Birbirinizi her gün özlüyorsunuz. Doğru mu?",a:["Doğru","Yanlış"]}]},
+{ad:"4. BÖLÜM: AŞK TESTİ 💘", sorular:[
+{q:"Sevgilini ne kadar seviyorsun?",a:["Çok","Daha çok","En çok","Anlatılamaz"]},
+{q:"Kavga edince ilk kim barışır?",a:["Gökdeniz","Sevgilim","İkimiz","Kavga etmeyiz"]},
+{q:"En güzel anınız hangisi?",a:["İlk buluşma","İlk sarılma","İlk öpücük","Hepsi"]},
+{q:"Gelecekte nerede yaşamak istersin?",a:["Deniz kenarı","Köy evi","Şehir","Sevgilimin yanında"]},
+{q:"Sonsuza kadar birlikte misiniz?",a:["Evet","Kesinlikle evet","Sonsuza dek evet","💍 Evet"]}]},
+{ad:"5. BÖLÜM: CEZALI 😏🔥", sorular:[
+{q:"Cezayı kim çeksin? Dürüst ol!",a:["Ben çekeyim","O çeksin","İkimiz çekelim","Ceza yok, öpüşelim"]},
+{q:"Kaybeden ne yapsın?",a:["Öpücük atsın 💋","Şarkı söylesin 🎤","Kahve ısmarlasın ☕","Sarılsın 🤗"]},
+{q:"Kaybeden ne kadar süre trip atmasın?",a:["1 gün","1 hafta","1 ay","Ömür boyu"]},
+{q:"Kazanan ne kazansın?",a:["Kocaman öpücük","Sürpriz hediye","Yemek","İstediği her şey"]},
+{q:"Son soru: Birbirinizi affettiniz mi?",a:["Evet","Çoktan","Hep affederiz","Küs kalamayız ki"]}]},
+];
+let cezalar=["💋 CEZA: Kaybeden kocaman bir öpücük atacak!","🎤 CEZA: Kaybeden sesli şarkı söyleyecek!","☕ CEZA: Kaybeden 1 hafta kahve ısmarlayacak!","🤗 CEZA: Kaybeden 1 dakika sıkı sıkı sarılacak!","💌 CEZA: Kaybeden 'Seni çok seviyorum' diye sesli mesaj atacak!"];
+let b=0, idx=0;
+function olustur(){benimIsim=document.getElementById('isim').value||"Gökdeniz"; kodum=Math.floor(100000+Math.random()*899999).toString(); benHost=true;
+peer=new Peer('biz-ask-'+kodum); peer.on('open',()=>{gosterBekle(); document.getElementById('bekleYazi').innerText="Oda kodun: "+kodum+" - Sevgilini bekliyorsun..."; document.getElementById('baslatBtn').style.display='block';});
+peer.on('connection',c=>{conn=c; conn.on('data',d=>{if(d.tip=='isim'){document.getElementById('oyuncular').innerText=benimIsim+" + "+d.isim+" bağlandı!";}}); conn.on('open',()=>conn.send({tip:'hosgeldin'}));});}
+function katil(){benimIsim=document.getElementById('isim').value||"Misafir"; kodum=document.getElementById('kodGir').value.trim(); if(!kodum) return alert("Kod yaz kanka!");
+peer=new Peer(); peer.on('open',()=>{conn=peer.connect('biz-ask-'+kodum); conn.on('open',()=>{conn.send({tip:'isim',isim:benimIsim}); gosterBekle(); document.getElementById('bekleYazi').innerText="Odaya katıldın! Başlatılmasını bekle...";});
+conn.on('data',d=>{if(d.tip=='basla'){soruGoster(d.b,d.idx);} if(d.tip=='soru'){soruGoster(d.b,d.idx);} if(d.tip=='bitis'){bitisGoster(d.ceza);}});});}
+function gosterBekle(){document.getElementById('lobi').style.display='none'; document.getElementById('bekle').style.display='block';}
+function baslat(){b=0; idx=0; document.getElementById('bekle').style.display='none'; document.getElementById('oyun').style.display='block'; soruGoster(0,0); if(conn) conn.send({tip:'basla',b:0,idx:0});}
+function soruGoster(bb,ii){b=bb; idx=ii; document.getElementById('bekle').style.display='none'; document.getElementById('oyun').style.display='block';
+let simdiki=b*5+idx+1;
+document.getElementById('bolum').innerText=bolumler[b].ad;
+document.getElementById('soru').innerText=bolumler[b].sorular[idx].q;
+document.getElementById('secenekler').innerHTML=bolumler[b].sorular[idx].a.map((s,j)=>`<button onclick="cevapVer(${j})">${s}</button>`).join('');
+document.getElementById('skor').innerText="Soru "+simdiki+" / 25";
+document.getElementById('ilerleme').innerText="❤️".repeat(simdiki)+"🤍".repeat(25-simdiki);}
+function cevapVer(j){if(idx+1<5){soruGoster(b,idx+1); if(benHost&&conn) conn.send({tip:'soru',b:b,idx:idx});} else if(b+1<bolumler.length){soruGoster(b+1,0); if(benHost&&conn) conn.send({tip:'soru',b:b,idx:idx});} else {let ceza=cezalar[Math.floor(Math.random()*cezalar.length)]; bitisGoster(ceza); if(conn) conn.send({tip:'bitis',ceza:ceza});}}
+function bitisGoster(ceza){document.getElementById('bolum').innerText="FİNAL 💍"; document.getElementById('soru').innerText="BİTTİ! Uyumunuz: %98 💕\n\n"+(ceza||cezalar[0]); document.getElementById('secenekler').innerHTML="<button class='ceza' onclick='location.reload()'>Cezayı Yap & Tekrar Oyna 🔁</button>"; document.getElementById('skor').innerText="25/25 soru tamamlandı!"; document.getElementById('ilerleme').innerText="❤️❤️❤️❤️❤️";}
+</script></body></html>

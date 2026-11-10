@@ -1,238 +1,158 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<!-- ================== AYARLAR ================== -->
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAÇIŞ 💕 - A Way Out</title>
-<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
-
-<!-- ================== TASARIM ================== -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ARABA OYUNU 🚗💨</title>
 <style>
-    * { box-sizing: border-box; }
-  body { margin:0; font-family:system-ui; background:#111; color:white; display:flex; justify-content:center; }
-  .box { width:100%; max-width:480px; background:#1e1e1e; padding:18px; text-align:center; min-height:100vh; }
-  h1 { font-size:28px; margin:5px; }
-  input { width:100%; padding:13px; border-radius:12px; border:0; margin:7px 0; text-align:center; font-size:16px; }
-  button { width:100%; padding:15px; border:0; border-radius:14px; background:#ff2e7e; color:white; font-weight:800; font-size:16px; margin:7px 0; cursor:pointer; }
-  button.green { background:#2e9e4f; }
-  button.dark { background:#333; }
-  button:disabled { opacity:.4; }
-  .card { background:#2a2a2a; border-radius:16px; padding:16px; margin:12px 0; }
-  .big { font-size:48px; }
-  .small { font-size:13px; color:#aaa; }
-  .bar { height:18px; background:#444; border-radius:10px; overflow:hidden; margin:10px 0; }
-  .bar div { height:100%; background:#2e9e4f; width:0%; transition:.2s; }
-  .pill { display:inline-block; background:#333; padding:6px 12px; border-radius:20px; font-size:13px; margin:3px; }
+    * { box-sizing:border-box; }
+  body { margin:0; background:#111; color:white; font-family:system-ui; display:flex; justify-content:center; overflow:hidden; }
+  .box { width:100%; max-width:480px; text-align:center; }
+  h1 { margin:8px; font-size:24px; }
+  #game { position:relative; width:100%; height:520px; background:#2d2d2d; overflow:hidden; border:3px solid #444; }
+  /* YOL */
+  .road { position:absolute; top:0; bottom:0; width:70%; left:15%; background:#333; border-left:4px dashed yellow; border-right:4px dashed yellow; }
+  .line { position:absolute; left:50%; width:6px; height:50px; background:white; margin-left:-3px; }
+  /* ARABALAR */
+  .car { position:absolute; width:52px; height:92px; border-radius:12px; font-size:42px; display:flex; align-items:center; justify-content:center; }
+  #myCar { background:#ff2e7e; bottom:20px; left:50%; transform:translateX(-50%); z-index:10; box-shadow:0 0 20px #ff2e7e; }
+  .enemy { background:#222; }
+  /* SKOR */
+  .top { display:flex; justify-content:space-between; padding:8px 12px; font-weight:800; }
+  /* TUŞLAR */
+  .controls { display:flex; justify-content:space-between; padding:12px; gap:10px; }
+  .btn { flex:1; padding:20px 0; font-size:28px; border-radius:18px; border:0; background:#333; color:white; }
+  .btn:active { background:#ff2e7e; }
+  .gas { background:#2e9e4f !important; }
+  .brake { background:#c0392b !important; }
+  #startBtn { width:94%; padding:16px; background:#ff2e7e; color:white; border:0; border-radius:14px; font-size:18px; font-weight:800; margin:10px 0; }
+  #msg { font-size:20px; font-weight:800; margin:6px; }
 </style>
 </head>
-
 <body>
 <div class="box">
+  <h1>🚗 ARABA OYUNU 💨</h1>
+  <div class="top"><span>🏆 SKOR: <span id="score">0</span></span><span>💨 HIZ: <span id="speed">0</span></span></div>
 
-  <!-- ================== BAŞLIK ================== -->
-  <h1>🔓 KAÇIŞ 💕</h1>
-  <div class="small">A Way Out - İkiniz olmadan kaçış yok!</div>
-
-  <!-- ================== 1. LOBİ ================== -->
-  <div id="lobby">
-    <input id="name" placeholder="İsmin">
-    <button onclick="createRoom()">🔓 Hapishane Kur</button>
-    <input id="code" placeholder="Hapishane Kodu">
-    <button class="green" onclick="joinRoom()">👉 Katıl</button>
-    <button class="dark" onclick="sameDevice()">📱 Aynı Telefonda Oyna</button>
-    <div id="info" class="small" style="margin-top:8px"></div>
-
-    <div class="card" style="text-align:left; font-size:14px;">
-      <b>Nasıl Oynanır?</b><br>
-            1. Biri kurar, biri katılır<br>
-            2. Biri Kaçan, biri Oyalayan olur<br>
-            3. Aynı anda basmazsanız gardiyan yakalar<br>
-            4. 5 bölümü geçerseniz özgürsünüz!
-    </div>
+  <div id="game">
+    <div class="road"></div>
+    <div id="myCar" class="car">🚗</div>
+    <div id="msg"></div>
   </div>
 
-  <!-- ================== 2. OYUN ================== -->
-  <div id="game" style="display:none">
-    <div>
-      <span class="pill" id="p1">Sen</span>
-      <span class="pill" id="p2">Sevgilin</span>
-      <span class="pill">📍 Bölüm <span id="level">1</span>/5</span>
-    </div>
+  <button id="startBtn" onclick="start()">▶️ OYUNU BAŞLAT</button>
 
-    <div class="card">
-      <div class="big" id="emoji">🚔</div>
-      <h2 id="title">Bölüm 1</h2>
-      <p id="desc" style="font-size:15px; line-height:1.5"></p>
-      <div class="bar"><div id="prog"></div></div>
-      <div class="small" id="progText">0 / 10</div>
-      <div class="small" id="status"></div>
-    </div>
-
-    <button id="mainBtn" class="green" onclick="press()">BAS! 👆</button>
-    <button onclick="location.reload()">Yeniden Başla</button>
+  <div class="controls">
+    <button class="btn" ontouchstart="left=true" ontouchend="left=false" onmousedown="left=true" onmouseup="left=false">◀️</button>
+    <button class="btn brake" ontouchstart="slow=true" ontouchend="slow=false" onmousedown="slow=true" onmouseup="slow=false">🛑</button>
+    <button class="btn gas" ontouchstart="fast=true" ontouchend="fast=false" onmousedown="fast=true" onmouseup="fast=false">💨 GAZ</button>
+    <button class="btn" ontouchstart="right=true" ontouchend="right=false" onmousedown="right=true" onmouseup="right=false">▶️</button>
   </div>
-
-  <!-- ================== 3. FİNAL ================== -->
-  <div id="final" style="display:none">
-    <div class="big">🎉🎉🎉</div>
-    <h1>ÖZGÜRSÜNÜZ!</h1>
-    <p>Beraber kaçtınız! Artık kimse sizi ayıramaz 💕</p>
-    <p class="small" id="finalNames"></p>
-    <button onclick="location.reload()">Tekrar Kaç 🔁</button>
-  </div>
-
+  <div style="font-size:13px;color:#aaa;padding-bottom:10px">◀️ ▶️ direksiyon, 💨 GAZ hızlandırır, 🛑 fren yapar<br>Klavyede: Ok tuşları / A-D de çalışır</div>
 </div>
 
-<!-- ================== OYUN KODU ================== -->
 <script>
-// ---------- 1. DEĞİŞKENLER ----------
-let S = { level:1, prog:0, pressed:{} };
-let myName = "", otherName = "Sevgilin";
-let isHost = false, peer = null, conn = null;
-let mode = "online", myRole = "";
+// ============ DEĞİŞKENLER ============
+let x = 50, speed = 0, score = 0, playing = false;
+let left=false, right=false, fast=false, slow=false;
+let enemies = [], lines = [];
+let gameEl = document.getElementById('game');
 
-// ---------- 2. BÖLÜMLER ----------
-let LEVELS = [
-  { emoji:"🚔", title:"Bölüm 1: Gardiyanı Oyala", desc:"Kaçan sürünüyor, Oyalayan gardiyanla konuşuyor. İkiniz de AYNI ANDA basarsanız gardiyan bakmaz.", need:3, sync:true },
-  { emoji:"⛏️", title:"Bölüm 2: Tünel Kaz", desc:"Kaşıkla tünel kazıyorsunuz! Toplam 15 kez basın. Sırayla basın, hızlı olun!", need:15, sync:false },
-  { emoji:"🔑", title:"Bölüm 3: Anahtarı Çal", desc:"Anahtar gardiyanın cebinde. Oyalayan oyalarken Kaçan çalıyor. İkiniz de 3 kez beraber basın!", need:3, sync:true },
-  { emoji:"🧗", title:"Bölüm 4: Duvarı Aş", desc:"Duvar çok yüksek! Biri omuz verecek, biri tırmanacak. Toplam 5 kez basın!", need:5, sync:false },
-  { emoji:"🚁", title:"Bölüm 5: Son Kaçış", desc:"Helikopter bekliyor! Son 5 kez beraber basın ve ÖZGÜR kalın!", need:5, sync:false }
-];
-
-// ---------- 3. EKRAN DEĞİŞTİRME ----------
-function show(id){
-  document.getElementById('lobby').style.display='none';
-  document.getElementById('game').style.display='none';
-  document.getElementById('final').style.display='none';
-  document.getElementById(id).style.display='block';
+// ============ YOL ÇİZGİLERİ ============
+for(let i=0;i<6;i++){
+  let l = document.createElement('div');
+  l.className='line'; l.style.top = (i*90)+'px';
+  gameEl.appendChild(l); lines.push(l);
 }
 
-// ---------- 4. EKRANI ÇİZ ----------
-function render(){
-  let L = LEVELS[S.level-1];
-  document.getElementById('level').innerText = S.level;
-  document.getElementById('emoji').innerText = L.emoji;
-  document.getElementById('title').innerText = L.title;
-  document.getElementById('desc').innerText = L.desc;
-  document.getElementById('prog').style.width = (S.prog / L.need * 100) + "%";
-  document.getElementById('progText').innerText = S.prog + " / " + L.need;
-  document.getElementById('p1').innerText = myName + " (" + myRole + ")";
-  document.getElementById('p2').innerText = otherName;
-  if(L.sync){
-    document.getElementById('status').innerText = "⚠️ Bu bölümde ikiniz AYNI ANDA basmalısınız! Biri bastıktan sonra 2 saniyen var.";
-  } else {
-    document.getElementById('status').innerText = "Bu bölümde sırayla basabilirsiniz, toplam " + L.need + " kez basın.";
-  }
+// ============ BAŞLAT ============
+function start(){
+  if(playing) return;
+  playing=true; score=0; speed=30; x=50; enemies=[];
+  document.querySelectorAll('.enemy').forEach(e=>e.remove());
+  document.getElementById('msg').innerText='';
+  document.getElementById('startBtn').innerText='🏁 OYUN DEVAM EDİYOR...';
+  requestAnimationFrame(loop);
+  setInterval(spawn, 900);
 }
 
-// ---------- 5. BUTONA BASMA ----------
-function press(){
-  // Aynı telefondaysa direkt ilerle
-  if(mode === "same"){
-    S.prog++;
-    if(S.prog >= LEVELS[S.level-1].need) nextLevel();
-    render(); return;
-  }
-
-  // Oda kuran kişi
-  if(isHost){
-    if(LEVELS[S.level-1].sync){
-      S.pressed.host = true;
-      checkSync();
-      setTimeout(()=>{ S.pressed = {}; render(); }, 2000);
-    } else {
-      S.prog++;
-      if(S.prog >= LEVELS[S.level-1].need) nextLevel();
-      sync(); render();
-    }
-  } else {
-    // Katılan kişi
-    conn.send({type:'press'});
-    document.getElementById('status').innerText = "Bastın! Diğer taraf da bassın...";
-  }
+function spawn(){
+  if(!playing) return;
+  let e = document.createElement('div');
+  e.className='car enemy';
+  e.innerText = ['🚕','🚙','🚚','🚐','🚓'][Math.floor(Math.random()*5)];
+  let ex = 18 + Math.random()*60; // yol içinde
+  e.style.left = ex + '%'; e.style.top = '-100px';
+  gameEl.appendChild(e);
+  enemies.push({el:e, y:-100, x:ex});
 }
 
-// ---------- 6. AYNI ANDA BASMA KONTROLÜ ----------
-function checkSync(){
-  if(S.pressed.host && S.pressed.guest){
-    S.prog++;
-    document.getElementById('status').innerText = "🎉 Oldu! Beraber başardınız!";
-    S.pressed = {};
-    if(S.prog >= LEVELS[S.level-1].need) nextLevel();
-    sync(); render();
-  } else {
-    document.getElementById('status').innerText = "Bastın! Şimdi sevgilin de 2 saniye içinde bassın!";
-    render(); sync();
-  }
-}
+// ============ OYUN DÖNGÜSÜ ============
+function loop(){
+  if(!playing) return;
 
-// ---------- 7. SONRAKİ BÖLÜM / BİTİŞ ----------
-function nextLevel(){
-  S.prog = 0; S.level++;
-  if(S.level > 5){
-    finish();
-    if(isHost && conn) conn.send({type:'finish'});
-    return;
-  }
-  sync(); render();
-}
+  // HIZ
+  if(fast) speed += 1.5;
+  if(slow) speed -= 2;
+  if(!fast && !slow) speed -= 0.3;
+  if(speed < 0) speed = 0;
+  if(speed > 160) speed = 160;
 
-function finish(){
-  show('final');
-  document.getElementById('finalNames').innerText = myName + " ❤️ " + otherName;
-}
+  // DİREKSİYON
+  if(left) x -= 1.2 + speed/80;
+  if(right) x += 1.2 + speed/80;
+  if(x < 16) x = 16;
+  if(x > 78) x = 78;
 
-// ---------- 8. İNTERNET BAĞLANTISI ----------
-function sync(){
-  if(isHost && conn){ try{ conn.send({type:'state', s:S}); }catch(e){} }
-}
+  // ARABAYI ÇİZ
+  let car = document.getElementById('myCar');
+  car.style.left = x + '%';
 
-function onData(d){
-  if(d.type === 'hello'){ otherName = d.name; show('game'); render(); }
-  if(d.type === 'press'){
-    if(LEVELS[S.level-1].sync){ S.pressed.guest = true; checkSync(); }
-    else { S.prog++; if(S.prog >= LEVELS[S.level-1].need) nextLevel(); sync(); render(); }
-  }
-  if(d.type === 'state'){ S = d.s; render(); }
-  if(d.type === 'finish'){ finish(); }
-}
-
-// ---------- 9. ODA KUR / KATIL / AYNI TELEFON ----------
-function createRoom(){
-  myName = document.getElementById('name').value.trim();
-  if(!myName) return alert("İsmini yaz!");
-  isHost = true; myRole = "Kaçan 🏃";
-  let code = Math.random().toString(36).substring(2,6).toLowerCase();
-  document.getElementById('info').innerHTML = "Kodun: <b style='font-size:26px'>"+code+"</b><br>Sevgiline at, o katılsın!";
-  peer = new Peer(code);
-  peer.on('connection', c => { conn = c; conn.on('data', onData); show('game'); render(); });
-  peer.on('error', ()=>{ alert("Hata oldu, aynı telefonda dene!"); });
-}
-
-function joinRoom(){
-  myName = document.getElementById('name').value.trim();
-  let code = document.getElementById('code').value.trim().toLowerCase();
-  if(!myName || !code) return alert("İsim + kod lazım!");
-  myRole = "Oyalayan 👀";
-  peer = new Peer();
-  peer.on('open', ()=>{
-    conn = peer.connect(code);
-    conn.on('open', ()=>{ conn.send({type:'hello', name:myName}); show('game'); render(); });
-    conn.on('data', onData);
+  // YOL ÇİZGİSİ AKIYOR
+  lines.forEach(l=>{
+    let t = parseInt(l.style.top) + speed/8;
+    if(t > 520) t = -50;
+    l.style.top = t + 'px';
   });
-  peer.on('error', ()=>{ alert("Kod yanlış! Küçük harfle yazdın mı?"); });
+
+  // DÜŞMANLAR GELİYOR
+  enemies.forEach((en, i)=>{
+    en.y += 3 + speed/15;
+    en.el.style.top = en.y + 'px';
+    // ÇARPTI MI?
+    if(en.y > 380 && en.y < 470 && Math.abs(en.x - x) < 9){
+      gameOver();
+    }
+    if(en.y > 560){ en.el.remove(); enemies.splice(i,1); score+=10; }
+  });
+
+  if(speed > 10) score += 1;
+
+  document.getElementById('score').innerText = score;
+  document.getElementById('speed').innerText = Math.floor(speed);
+  requestAnimationFrame(loop);
 }
 
-function sameDevice(){
-  myName = document.getElementById('name').value.trim() || "Sen";
-  otherName = "Sevgilin"; myRole = "İkiniz"; mode = "same";
-  show('game'); render();
+function gameOver(){
+  playing=false;
+  document.getElementById('msg').innerHTML = '💥 KAZA YAPTIN!<br>SKOR: '+score+'<br>Tekrar oyna!';
+  document.getElementById('msg').style.color='#ff2e7e';
+  document.getElementById('startBtn').innerText='🔁 TEKRAR OYNA';
 }
 
-// ---------- 10. BAŞLAT ----------
-render();
+// ============ KLAVYE ============
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowLeft'||e.key==='a') left=true;
+  if(e.key==='ArrowRight'||e.key==='d') right=true;
+  if(e.key==='ArrowUp'||e.key==='w') fast=true;
+  if(e.key==='ArrowDown'||e.key==='s') slow=true;
+});
+document.addEventListener('keyup', e=>{
+  if(e.key==='ArrowLeft'||e.key==='a') left=false;
+  if(e.key==='ArrowRight'||e.key==='d') right=false;
+  if(e.key==='ArrowUp'||e.key==='w') fast=false;
+  if(e.key==='ArrowDown'||e.key==='s') slow=false;
+});
 </script>
 </body>
 </html>

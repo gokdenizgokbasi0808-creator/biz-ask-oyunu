@@ -43,10 +43,8 @@
 <div class="wrap">
 <div class="section card"><div class="big">"Aylin gülünce<br>benim dünyam güzelleşiyor."</div><p style="text-align:center;margin-top:12px">— Gökdeniz</p></div>
 <div class="section"><h2 style="text-align:center;font-family:'Playfair Display',serif;font-size:28px">📸 Bizim Hikayemiz</h2>
-<div class="polaroid"><img data-base="IMG_3161"><b>❤️ Kalp kalbe - O gece</b></div>
-<div class="polaroid"><img data-base="IMG_2936"><b>🥹 Seni taşımak bile güzel</b></div>
-<div class="polaroid"><img data-base="IMG_0236"><b>😍 Yan yana en güzel biziz</b></div>
-<div class="polaroid"><img data-base="IMG_7848"><b>🤍 Sarılınca dünya duruyor</b></div>
+<div class="polaroid"><img src="IMG_3161.jpeg"><b>❤️ Kalp kalbe - O gece</b></div>
+<div class="polaroid"><img src="IMG_0236.jpeg"><b>😍 Yan yana en güzel biziz</b></div>
 </div>
 <div class="section card"><h2>❤️ Aşk Ölçer</h2><p>Gökdeniz'in Aylin'e olan aşkı ölçülüyor...</p><div class="bar"><i id="bar"></i></div><b id="yuzde" style="font-size:28px;color:#ff6a9a">%0</b><p style="margin-top:8px">Sonuç: Bu aşk ölçülemiyor, sonsuz! ♾️</p></div>
 <div class="section"><div class="letter"><h2 style="color:#ff2e7e">💌 Aylin'e Mektup</h2><br>Aylin'im,<br><br>Ben seni öyle sıradan sevmiyorum. Sabah uyanınca aklıma ilk gelen, gece yatmadan önce son düşündüğüm kişisin.<br><br>Senin gülüşün benim en sevdiğim şarkıdan daha güzel. Senin sesin kötü günümü bile güzelleştiriyor.<br><br>Bazıları sevgi geçer diyor, benimki geçmiyor. Her gün biraz daha artıyor. Bugün seni ilk günkünden 100 kat daha fazla seviyorum.<br><br>Bu site kapanırsa bile, benim sana olan sevgim kapanmayacak.<br><br><b>- Sonsuza kadar senin Gökdeniz</b></div></div>
@@ -54,12 +52,6 @@
 <div class="footer">© 2026 Gökdeniz ❤️ Aylin - Sonsuza Dek<br>Şifre: 0825</div>
 </div></div>
 <script>
-let uzantilar=['.jpeg','.JPG','.jpg','.JPEG','.png','.PNG','.heic','.HEIC'];
-document.querySelectorAll('img[data-base]').forEach(img=>{
-  let base=img.dataset.base; let i=0;
-  function dene(){ if(i>=uzantilar.length) return; img.src=base+uzantilar[i]; i++; }
-  img.onerror=dene; dene();
-});
 function kontrol(){let g=document.getElementById('sifre').value;if(g==='0825'){document.getElementById('lock').style.display='none';document.getElementById('icerik').style.display='block';setTimeout(()=>{document.getElementById('bar').style.width='100%';let s=0;let t=setInterval(()=>{s+=2;if(s>=100){s=100;clearInterval(t)}document.getElementById('yuzde').innerText='%'+s},30)},500);window.scrollTo(0,0)}else{document.getElementById('hata').innerText='❌ Yanlış şifre!';document.getElementById('sifre').value='';}}
 document.getElementById('sifre').addEventListener('keypress',e=>{if(e.key==='Enter')kontrol()});
 function evet(){document.getElementById('sonuc').innerText='🎉 BİLİYORDUM! Ben de seni çok seviyorum! ❤️❤️❤️';for(let i=0;i<50;i++){let d=document.createElement('div');d.innerText=['❤️','💖','💕','✨','🥰'][Math.floor(Math.random()*5)];d.style.position='fixed';d.style.left=Math.random()*100+'vw';d.style.top='-20px';d.style.fontSize='30px';d.style.zIndex=999;document.body.appendChild(d);let y=-20;let it=setInterval(()=>{y+=8;d.style.top=y+'px';if(y>window.innerHeight){clearInterval(it);d.remove()}},30)}}

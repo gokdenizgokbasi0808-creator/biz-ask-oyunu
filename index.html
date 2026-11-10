@@ -1,70 +1,155 @@
 <!DOCTYPE html>
-<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Biz 💕 Cezalı Oyun</title><script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
-<style>body{margin:0;font-family:sans-serif;background:linear-gradient(#ff5e8a,#a1004d);color:#fff;display:flex;justify-content:center;min-height:100vh} .box{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);margin:20px auto;padding:24px;border-radius:24px;width:90%;max-width:400px;text-align:center} input,button{width:100%;padding:13px;margin:7px 0;border:0;border-radius:14px;font-size:16px} button{background:#fff;color:#d6005c;font-weight:bold} .pembe{background:#ffb3cd} .ceza{background:#ffe600;color:#000;font-weight:bold} h1{font-size:42px;margin:5px} .soru{font-size:21px;margin:18px 0} .bolum{background:#fff;color:#d6005c;padding:6px 12px;border-radius:20px;font-weight:bold;display:inline-block}</style></head>
-<body><div class="box">
-<h1>💕 BİZ</h1><p>İki kalp, tek oyun - CEZALI VERSİYON 😏</p>
-<div id="lobi">
-<input id="isim" placeholder="İsmin (örn: Gökdeniz)">
-<button onclick="olustur()">❤️ Oda oluştur</button>
-<p>VEYA</p>
-<input id="kodGir" placeholder="Oda kodu">
-<button class="pembe" onclick="katil()">💌 Odaya katıl</button>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BİZ 💕 CEZALI V2</title>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#ff2e7e;color:white;display:flex;justify-content:center;min-height:100vh}
+.box{width:100%;max-width:480px;background:#ff5c9e;padding:22px;text-align:center}
+h1{font-size:42px;margin:10px 0 5px}input{width:100%;padding:14px;border-radius:14px;border:0;margin:8px 0;font-size:16px;text-align:center}
+button{width:100%;padding:14px;border:0;border-radius:14px;background:white;color:#ff2e7e;font-weight:800;font-size:16px;margin:8px 0;cursor:pointer}
+button.pink{background:#ff2e7e;color:white;border:2px solid white}
+.card{background:white;color:#333;border-radius:18px;padding:18px;margin:14px 0;text-align:left}
+.opt{background:#ffe6f0;padding:13px;border-radius:12px;margin:8px 0;cursor:pointer;font-weight:600}
+.opt.sel{background:#ff2e7e;color:white}
+.small{font-size:13px;opacity:.9}.big{font-size:26px;font-weight:800}
+#ceza{background:#fff;color:#ff2e7e;border-radius:18px;padding:20px;font-size:22px;font-weight:800}
+</style>
+</head>
+<body>
+<div class="box">
+<h1>💕 BİZ</h1>
+<div class="small">İki kalp, tek oyun - CEZALI VERSİYON V2 🏆</div>
+<div id="lobby">
+<input id="name" placeholder="İsmin (örn: Gökdeniz)">
+<button onclick="createRoom()">❤️ Oda Oluştur</button>
+<div class="small">VEYA</div>
+<input id="code" placeholder="Oda kodu">
+<button class="pink" onclick="joinRoom()">👉 Odaya Katıl</button>
+<button style="background:#222;color:white" onclick="sameDevice()">📱 Aynı Telefonda Oyna</button>
+<div id="info" class="small" style="margin-top:10px"></div>
 </div>
-<div id="bekle" style="display:none"><h2 id="bekleYazi">Bekleniyor...</h2><p id="oyuncular"></p><button id="baslatBtn" style="display:none" onclick="baslat()">Oyunu Başlat ▶️</button></div>
-<div id="oyun" style="display:none"><span class="bolum" id="bolum"></span><div class="soru" id="soru"></div><div id="secenekler"></div><p id="skor"></p><p id="ilerleme"></p></div>
+<div id="game" style="display:none">
+<div id="status" class="small"></div>
+<div id="score" class="big"></div>
+<div class="card">
+<div id="qtext" style="font-size:19px;font-weight:700"></div>
+<div id="opts"></div>
+</div>
+<button id="sendBtn" onclick="sendAnswer()">Cevabı Gönder ➡️</button>
+<div id="reveal" class="card" style="display:none"></div>
+<button id="nextBtn" style="display:none;background:#222;color:white" onclick="nextQ()">Sonraki Soru ➡️</button>
+</div>
+<div id="final" style="display:none">
+<h2 id="winner"></h2>
+<div id="ceza"></div>
+<p class="small">Ceza çekmeyen, ilişkiyi kaybeder 😏</p>
+<button onclick="location.reload()">Tekrar Oyna 🔁</button>
+</div>
 </div>
 <script>
-let peer, conn, benimIsim, benHost=false, kodum="";
-let bolumler=[
-{ad:"1. BÖLÜM: TANIŞMA", sorular:[
-{q:"Gökdeniz en çok neyi sever?",a:["Tatlı","Oyun","Uyku","Hepsi"]},
-{q:"İlk buluşmada ne hissettin?",a:["Heyecan","Mutluluk","Utanç","Hepsi"]},
-{q:"En sevdiğiniz yemek?",a:["Pizza","Mantı","Kebap","Makarna"]},
-{q:"Birlikte nereye gitmek istersin?",a:["Deniz","Dağ","Paris","Evde film"]},
-{q:"Gökdeniz ne zaman kızar?",a:["Acıkınca","Yorulunca","İlgisizlikte","Hiç kızmaz"]}]},
-{ad:"2. BÖLÜM: KİM DAHA ÇOK?", sorular:[
-{q:"Kim daha kıskanç?",a:["Gökdeniz","Sevgilim","İkimiz de","Hiçbirimiz"]},
-{q:"Kim daha çok uyur?",a:["Gökdeniz","Sevgilim","İkimiz de","Belli olmaz"]},
-{q:"Kim daha çok yemek yer?",a:["Gökdeniz","Sevgilim","İkimiz de","Eşitiz"]},
-{q:"Kim daha çok trip atar?",a:["Gökdeniz","Sevgilim","İkimiz de","Asla"]},
-{q:"Kim daha çok özler?",a:["Gökdeniz","Sevgilim","İkimiz de","Çok özleriz"]}]},
-{ad:"3. BÖLÜM: DOĞRU MU YANLIŞ MI?", sorular:[
-{q:"Gökdeniz sabah insanı değildir. Doğru mu?",a:["Doğru","Yanlış"]},
-{q:"Sevgilim dizi izlerken uyuyakalır. Doğru mu?",a:["Doğru","Yanlış"]},
-{q:"İkiniz de tatlıyı çok seversiniz. Doğru mu?",a:["Doğru","Yanlış"]},
-{q:"Gökdeniz asla kıskanmaz. Doğru mu?",a:["Doğru","Yanlış"]},
-{q:"Birbirinizi her gün özlüyorsunuz. Doğru mu?",a:["Doğru","Yanlış"]}]},
-{ad:"4. BÖLÜM: AŞK TESTİ 💘", sorular:[
-{q:"Sevgilini ne kadar seviyorsun?",a:["Çok","Daha çok","En çok","Anlatılamaz"]},
-{q:"Kavga edince ilk kim barışır?",a:["Gökdeniz","Sevgilim","İkimiz","Kavga etmeyiz"]},
-{q:"En güzel anınız hangisi?",a:["İlk buluşma","İlk sarılma","İlk öpücük","Hepsi"]},
-{q:"Gelecekte nerede yaşamak istersin?",a:["Deniz kenarı","Köy evi","Şehir","Sevgilimin yanında"]},
-{q:"Sonsuza kadar birlikte misiniz?",a:["Evet","Kesinlikle evet","Sonsuza dek evet","💍 Evet"]}]},
-{ad:"5. BÖLÜM: CEZALI 😏🔥", sorular:[
-{q:"Cezayı kim çeksin? Dürüst ol!",a:["Ben çekeyim","O çeksin","İkimiz çekelim","Ceza yok, öpüşelim"]},
-{q:"Kaybeden ne yapsın?",a:["Öpücük atsın 💋","Şarkı söylesin 🎤","Kahve ısmarlasın ☕","Sarılsın 🤗"]},
-{q:"Kaybeden ne kadar süre trip atmasın?",a:["1 gün","1 hafta","1 ay","Ömür boyu"]},
-{q:"Kazanan ne kazansın?",a:["Kocaman öpücük","Sürpriz hediye","Yemek","İstediği her şey"]},
-{q:"Son soru: Birbirinizi affettiniz mi?",a:["Evet","Çoktan","Hep affederiz","Küs kalamayız ki"]}]},
+const questions=[
+["En sevdiğin yemek ne?","Kebap","Pizza","Makarna","Mantı"],
+["İlk öpücük nerde olsun isterdin?","Deniz kenarı","Sinema","Park","Evde"],
+["En çok neye sinirleniyorsun?","Geç cevap","Yalan","İlgisizlik","Kıskançlık"],
+["En romantik şey ne?","Sarılmak","El ele gezmek","Sürpriz","Birlikte film"],
+["Kavga edince ne yaparsın?","Küserim","Konuşurum","Ağlarım","Kaçarım"],
+["En sevdiğin renk?","Kırmızı","Pembe","Siyah","Mavi"],
+["En büyük hayalin?","Evlenmek","Gezmek","Zengin olmak","Aile kurmak"],
+["En çok kimi kıskanıyorsun?","Eski sevgili","Arkadaş","Kimse","Herkes"],
+["İlk buluşmada ne giyersin?","Şık","Rahat","Spor","Elbise"],
+["En sevdiğin şarkı türü?","Pop","Rap","Arabesk","Slow"],
+["Sabah mı gece mi?","Sabah","Gece","İkisi de","Hiçbiri"],
+["En çok ne yersin?","Tatlı","Tuzlu","Acı","Hepsi"],
+["En korktuğun şey?","Ayrılmak","Yalnızlık","Karanlık","Yükseklik"],
+["En sevdiğin mevsim?","Yaz","Kış","İlkbahar","Sonbahar"],
+["Telefonuna en çok neye bakarsın?","Ona","TikTok","Oyun","Müzik"],
+["En çok neye gülersin?","Onun esprisi","Meme","Düşmek","Dizi"],
+["En romantik film?","Titanic","Aşk filmi","Komedi","Korku"],
+["En sevdiğin içecek?","Kola","Ayran","Kahve","Su"],
+["En çok neyi özlüyorsun?","Onu","Çocukluk","Tatil","Eski günler"],
+["En çok neye para harcarsın?","Yemek","Kıyafet","Oyun","Hediye"],
+["En iyi özelliğin?","Sadık","Eğlenceli","Dürüst","Romantik"],
+["En kötü özelliğin?","Kıskanç","İnatçı","Alıngan","Unutkan"],
+["Onu en çok ne mutlu eder?","İlgi","Hediye","Sarılma","Söz"],
+["Kavga sonrası ilk kim yazar?","Ben","O","Kimse","İkimiz"],
+["Onu ne kadar seviyorsun?","Çok","Deli gibi","Tarifsiz","Sonsuz"]
 ];
-let cezalar=["💋 CEZA: Kaybeden kocaman bir öpücük atacak!","🎤 CEZA: Kaybeden sesli şarkı söyleyecek!","☕ CEZA: Kaybeden 1 hafta kahve ısmarlayacak!","🤗 CEZA: Kaybeden 1 dakika sıkı sıkı sarılacak!","💌 CEZA: Kaybeden 'Seni çok seviyorum' diye sesli mesaj atacak!"];
-let b=0, idx=0;
-function olustur(){benimIsim=document.getElementById('isim').value||"Gökdeniz"; kodum=Math.floor(100000+Math.random()*899999).toString(); benHost=true;
-peer=new Peer('biz-ask-'+kodum); peer.on('open',()=>{gosterBekle(); document.getElementById('bekleYazi').innerText="Oda kodun: "+kodum+" - Sevgilini bekliyorsun..."; document.getElementById('baslatBtn').style.display='block';});
-peer.on('connection',c=>{conn=c; conn.on('data',d=>{if(d.tip=='isim'){document.getElementById('oyuncular').innerText=benimIsim+" + "+d.isim+" bağlandı!";}}); conn.on('open',()=>conn.send({tip:'hosgeldin'}));});}
-function katil(){benimIsim=document.getElementById('isim').value||"Misafir"; kodum=document.getElementById('kodGir').value.trim(); if(!kodum) return alert("Kod yaz kanka!");
-peer=new Peer(); peer.on('open',()=>{conn=peer.connect('biz-ask-'+kodum); conn.on('open',()=>{conn.send({tip:'isim',isim:benimIsim}); gosterBekle(); document.getElementById('bekleYazi').innerText="Odaya katıldın! Başlatılmasını bekle...";});
-conn.on('data',d=>{if(d.tip=='basla'){soruGoster(d.b,d.idx);} if(d.tip=='soru'){soruGoster(d.b,d.idx);} if(d.tip=='bitis'){bitisGoster(d.ceza);}});});}
-function gosterBekle(){document.getElementById('lobi').style.display='none'; document.getElementById('bekle').style.display='block';}
-function baslat(){b=0; idx=0; document.getElementById('bekle').style.display='none'; document.getElementById('oyun').style.display='block'; soruGoster(0,0); if(conn) conn.send({tip:'basla',b:0,idx:0});}
-function soruGoster(bb,ii){b=bb; idx=ii; document.getElementById('bekle').style.display='none'; document.getElementById('oyun').style.display='block';
-let simdiki=b*5+idx+1;
-document.getElementById('bolum').innerText=bolumler[b].ad;
-document.getElementById('soru').innerText=bolumler[b].sorular[idx].q;
-document.getElementById('secenekler').innerHTML=bolumler[b].sorular[idx].a.map((s,j)=>`<button onclick="cevapVer(${j})">${s}</button>`).join('');
-document.getElementById('skor').innerText="Soru "+simdiki+" / 25";
-document.getElementById('ilerleme').innerText="❤️".repeat(simdiki)+"🤍".repeat(25-simdiki);}
-function cevapVer(j){if(idx+1<5){soruGoster(b,idx+1); if(benHost&&conn) conn.send({tip:'soru',b:b,idx:idx});} else if(b+1<bolumler.length){soruGoster(b+1,0); if(benHost&&conn) conn.send({tip:'soru',b:b,idx:idx});} else {let ceza=cezalar[Math.floor(Math.random()*cezalar.length)]; bitisGoster(ceza); if(conn) conn.send({tip:'bitis',ceza:ceza});}}
-function bitisGoster(ceza){document.getElementById('bolum').innerText="FİNAL 💍"; document.getElementById('soru').innerText="BİTTİ! Uyumunuz: %98 💕\n\n"+(ceza||cezalar[0]); document.getElementById('secenekler').innerHTML="<button class='ceza' onclick='location.reload()'>Cezayı Yap & Tekrar Oyna 🔁</button>"; document.getElementById('skor').innerText="25/25 soru tamamlandı!"; document.getElementById('ilerleme').innerText="❤️❤️❤️❤️❤️";}
-</script></body></html>
+const penalties=["🧊 Buz gibi su iç!","💃 1 dk dans et, video çek!","📱 Profil fotoğrafını 1 gün onun fotoğrafı yap!","🍫 Ona çikolata ısmarla!","🎤 Sesli mesajla şarkı söyle!","🤳 Birlikte selfie at!","💋 Alnından öpücük borcun var!","🧹 1 gün evi sen topla!","📞 5 dk boyunca sadece 'aşkım' diye konuş!","🍕 Bir sonraki yemek senden!"];
+let myName="", isHost=false, peer=null, conn=null, myAnswers=[], otherAnswers=[], qIndex=0, myScore=0, otherScore=0, selected=null, mode="online", otherName="Rakip";
+function show(id){document.getElementById('lobby').style.display='none';document.getElementById('game').style.display='none';document.getElementById('final').style.display='none';document.getElementById(id).style.display='block';}
+function renderQ(){
+document.getElementById('reveal').style.display='none';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('sendBtn').style.display='block';
+document.getElementById('status').innerText="Soru "+(qIndex+1)+" / "+questions.length;
+document.getElementById('score').innerText="Sen: "+myScore+" - "+otherName+": "+otherScore;
+document.getElementById('qtext').innerText=questions[qIndex][0];
+let h=""; selected=null;
+for(let i=1;i<=4;i++){h+='<div class="opt" onclick="pick(this,'+i+')">'+questions[qIndex][i]+'</div>'}
+document.getElementById('opts').innerHTML=h;
+}
+function pick(el,i){document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');selected=i;}
+function sendAnswer(){
+if(selected==null) return alert("Bir şık seç kanka!");
+myAnswers[qIndex]=selected;
+document.getElementById('sendBtn').style.display='none';
+document.getElementById('status').innerText="Cevabın gitti... Karşı taraf bekleniyor...";
+if(mode==="same"){otherAnswers[qIndex]=Math.floor(Math.random()*4)+1; reveal();}
+else if(isHost){checkBoth();}
+else{conn.send({type:'answer',index:qIndex,ans:selected});}
+}
+function checkBoth(){if(myAnswers[qIndex]!=null && otherAnswers[qIndex]!=null) revealHost();}
+function revealHost(){
+let same=myAnswers[qIndex]===otherAnswers[qIndex];
+if(same){myScore++; otherScore++;}
+conn.send({type:'reveal',index:qIndex,myAns:myAnswers[qIndex],otherAns:otherAnswers[qIndex],myScore:myScore,otherScore:otherScore,same:same});
+showReveal(myAnswers[qIndex],otherAnswers[qIndex],same);
+}
+function showReveal(myA,otA,same){
+let r=document.getElementById('reveal');
+r.style.display='block';
+r.innerHTML="<b>"+(same?"🎉 AYNI CEVAP! +1 puan":"😅 Farklı cevap")+"</b><br><br>Sen: "+questions[qIndex][myA]+"<br>"+otherName+": "+questions[qIndex][otA];
+document.getElementById('score').innerText="Sen: "+myScore+" - "+otherName+": "+otherScore;
+if(isHost || mode==="same"){document.getElementById('nextBtn').style.display='block';}
+else{document.getElementById('status').innerText="Diğer taraf Sonraki'ye basınca devam edecek...";}
+}
+function reveal(){let same=myAnswers[qIndex]===otherAnswers[qIndex]; if(same){myScore++; otherScore++;} showReveal(myAnswers[qIndex],otherAnswers[qIndex],same);}
+function nextQ(){
+if(qIndex>=questions.length-1){finish(); if(mode!=="same"&&isHost) conn.send({type:'finish',myScore:myScore,otherScore:otherScore}); return;}
+qIndex++;
+if(mode!=="same"&&isHost) conn.send({type:'next',index:qIndex});
+renderQ();
+}
+function finish(){
+show('final');
+let winner=myScore>=otherScore?"🏆 KAZANDIN!":"😭 KAYBETTİN!";
+let loser=myScore<otherScore?"Sen":(myScore>otherScore?otherName:"Berabere");
+let pen=penalties[Math.floor(Math.random()*penalties.length)];
+document.getElementById('winner').innerText=winner+" Skor: "+myScore+" - "+otherScore;
+document.getElementById('ceza').innerHTML="CEZA ⬇️<br><br>"+(myScore===otherScore?"Berabere! İkiniz de ceza çekin: "+pen:loser+" ceza çekecek: "+pen);
+}
+function createRoom(){
+myName=document.getElementById('name').value.trim(); if(!myName) return alert("İsmini yaz!");
+isHost=true; let code=Math.random().toString(36).substring(2,6).toLowerCase();
+document.getElementById('info').innerHTML="Oda kodun: <b style='font-size:24px'>"+code+"</b><br>Bu kodu sevgiline at! Bekleniyor...";
+peer=new Peer(code);
+peer.on('connection',c=>{conn=c; otherName="Sevgilin"; conn.on('data',onData); document.getElementById('info').innerHTML="Bağlandı! Oyun başlıyor..."; show('game'); renderQ();});
+}
+function joinRoom(){
+myName=document.getElementById('name').value.trim(); let code=document.getElementById('code').value.trim().toLowerCase(); if(!myName||!code) return alert("İsim + kod lazım!");
+peer=new Peer(); peer.on('open',()=>{conn=peer.connect(code); conn.on('open',()=>{conn.send({type:'hello',name:myName}); show('game'); document.getElementById('status').innerText="Bağlandın! Oda sahibi başlatıyor...";}); conn.on('data',onData);});
+}
+function onData(d){
+if(d.type==='hello'){otherName=d.name; show('game'); renderQ();}
+if(d.type==='answer'){otherAnswers[d.index]=d.ans; checkBoth();}
+if(d.type==='reveal'){myScore=d.otherScore; otherScore=d.myScore; showReveal(myAnswers[d.index],d.myAns,d.same);}
+if(d.type==='next'){qIndex=d.index; renderQ();}
+if(d.type==='finish'){myScore=d.otherScore; otherScore=d.myScore; finish();}
+}
+function sameDevice(){myName=document.getElementById('name').value.trim()||"Sen"; otherName="Sevgilin"; mode="same"; show('game'); renderQ();}
+</script>
+</body>
+</html>

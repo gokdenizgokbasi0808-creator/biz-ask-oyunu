@@ -2,157 +2,70 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ARABA OYUNU 🚗💨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gökdeniz ❤️ Aylin - Özel</title>
 <style>
-    * { box-sizing:border-box; }
-  body { margin:0; background:#111; color:white; font-family:system-ui; display:flex; justify-content:center; overflow:hidden; }
-  .box { width:100%; max-width:480px; text-align:center; }
-  h1 { margin:8px; font-size:24px; }
-  #game { position:relative; width:100%; height:520px; background:#2d2d2d; overflow:hidden; border:3px solid #444; }
-  /* YOL */
-  .road { position:absolute; top:0; bottom:0; width:70%; left:15%; background:#333; border-left:4px dashed yellow; border-right:4px dashed yellow; }
-  .line { position:absolute; left:50%; width:6px; height:50px; background:white; margin-left:-3px; }
-  /* ARABALAR */
-  .car { position:absolute; width:52px; height:92px; border-radius:12px; font-size:42px; display:flex; align-items:center; justify-content:center; }
-  #myCar { background:#ff2e7e; bottom:20px; left:50%; transform:translateX(-50%); z-index:10; box-shadow:0 0 20px #ff2e7e; }
-  .enemy { background:#222; }
-  /* SKOR */
-  .top { display:flex; justify-content:space-between; padding:8px 12px; font-weight:800; }
-  /* TUŞLAR */
-  .controls { display:flex; justify-content:space-between; padding:12px; gap:10px; }
-  .btn { flex:1; padding:20px 0; font-size:28px; border-radius:18px; border:0; background:#333; color:white; }
-  .btn:active { background:#ff2e7e; }
-  .gas { background:#2e9e4f !important; }
-  .brake { background:#c0392b !important; }
-  #startBtn { width:94%; padding:16px; background:#ff2e7e; color:white; border:0; border-radius:14px; font-size:18px; font-weight:800; margin:10px 0; }
-  #msg { font-size:20px; font-weight:800; margin:6px; }
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600;800&display=swap');
+  *{box-sizing:border-box} body{margin:0;font-family:'Poppins',sans-serif;background:#fff5f7;color:#2d2d2d;overflow-x:hidden}
+  #lock{position:fixed;inset:0;background:linear-gradient(135deg,#ff2e7e,#ff6a9a);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+  .lock-box{background:white;width:100%;max-width:380px;border-radius:28px;padding:28px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+  .lock-box h1{font-family:'Playfair Display',serif;font-size:30px;margin:10px 0;color:#ff2e7e}
+  .lock-box input{width:100%;padding:16px;font-size:22px;text-align:center;letter-spacing:8px;border:2px solid #ffd6e3;border-radius:14px;outline:none;margin:14px 0}
+  .lock-box button{width:100%;padding:15px;background:#ff2e7e;color:white;border:0;border-radius:14px;font-size:17px;font-weight:800}
+  #hata{color:red;font-size:13px;font-weight:700;min-height:18px}
+  #icerik{display:none}
+  .hearts{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .hearts span{position:absolute;animation:fall linear infinite;opacity:.7}
+  @keyframes fall{0%{transform:translateY(-10vh) rotate(0)}100%{transform:translateY(110vh) rotate(360deg)}}
+  .wrap{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:18px}
+  .hero{text-align:center;padding:28px 16px 20px;background:linear-gradient(135deg,#ff2e7e,#ff6a9a,#ffb3c6);color:white;border-radius:28px;box-shadow:0 15px 40px rgba(255,46,126,.35)}
+  .hero h1{font-family:'Playfair Display',serif;font-size:38px;line-height:1.1;margin:8px 0}
+  .badge{display:inline-block;background:white;color:#ff2e7e;padding:8px 18px;border-radius:100px;font-weight:800;font-size:12px}
+  .card{background:white;border-radius:22px;padding:22px;margin:16px 0;box-shadow:0 8px 25px rgba(0,0,0,.07)}
+  .card h2{margin:0 0 10px;font-size:20px;color:#ff2e7e}
+  .card p{line-height:1.8;font-size:15.5px;color:#444}
+  .big-quote{text-align:center;font-family:'Playfair Display',serif;font-size:24px;line-height:1.4}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .gallery img{width:100%;height:240px;object-fit:cover;border-radius:16px}
+  .gallery figure{margin:0}
+  .gallery figcaption{text-align:center;font-size:12px;color:#888;padding:6px}
+  .main-photo{width:100%;height:360px;object-fit:cover;border-radius:18px}
+  .reasons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .reason{background:#fff0f4;border:1px solid #ffd6e3;padding:14px;border-radius:18px;text-align:center}
+  .reason b{font-size:26px;display:block}
+  .reason span{font-size:13px;font-weight:600}
+  .letter{background:#fffdf5;border:2px dashed #ffb3c6;padding:20px;border-radius:18px;line-height:1.9;font-size:15.5px}
+  .counter{text-align:center;background:#2d2d2d;color:white;border-radius:22px;padding:20px}
+  .counter b{font-size:30px;color:#ff6a9a}
+  .footer{text-align:center;font-size:12px;color:#999;padding:20px}
+  @media(max-width:500px){.gallery{grid-template-columns:1fr}.gallery img{height:300px}.main-photo{height:320px}}
 </style>
 </head>
 <body>
-<div class="box">
-  <h1>🚗 ARABA OYUNU 💨</h1>
-  <div class="top"><span>🏆 SKOR: <span id="score">0</span></span><span>💨 HIZ: <span id="speed">0</span></span></div>
-
-  <div id="game">
-    <div class="road"></div>
-    <div id="myCar" class="car">🚗</div>
-    <div id="msg"></div>
-  </div>
-
-  <button id="startBtn" onclick="start()">▶️ OYUNU BAŞLAT</button>
-
-  <div class="controls">
-    <button class="btn" ontouchstart="left=true" ontouchend="left=false" onmousedown="left=true" onmouseup="left=false">◀️</button>
-    <button class="btn brake" ontouchstart="slow=true" ontouchend="slow=false" onmousedown="slow=true" onmouseup="slow=false">🛑</button>
-    <button class="btn gas" ontouchstart="fast=true" ontouchend="fast=false" onmousedown="fast=true" onmouseup="fast=false">💨 GAZ</button>
-    <button class="btn" ontouchstart="right=true" ontouchend="right=false" onmousedown="right=true" onmouseup="right=false">▶️</button>
-  </div>
-  <div style="font-size:13px;color:#aaa;padding-bottom:10px">◀️ ▶️ direksiyon, 💨 GAZ hızlandırır, 🛑 fren yapar<br>Klavyede: Ok tuşları / A-D de çalışır</div>
-</div>
-
+<div id="lock"><div class="lock-box"><div style="font-size:50px">🔒❤️</div><h1>Gökdeniz ❤️ Aylin</h1><p style="font-size:14px;color:#666">Bu site özeldir.<br>Sadece bizim bildiğimiz şifreyi gir.</p><input id="sifre" type="password" inputmode="numeric" placeholder="••••" maxlength="4"><div id="hata"></div><button onclick="kontrol()">💖 KİLİDİ AÇ</button><div style="font-size:12px;color:#999;margin-top:10px">İpucu: Gökdeniz'in doğum günü 🥳</div></div></div>
+<div id="icerik"><div class="hearts" id="hearts"></div><div class="wrap">
+<div class="hero"><div class="badge">🔒 SADECE BİZE ÖZEL - ŞİFRE: 0825</div><h1>Gökdeniz<br>❤️<br>Aylin</h1><p>Bu site sadece senin için Aylin.<br>Şifreyi bilen girebilir.</p></div>
+<div class="card"><h2>📸 Bizim En Güzel Anılarımız</h2>
+<img class="main-photo" src="IMG_3161.jpeg" alt="Biz">
+<p style="text-align:center;font-size:13px">Bu kalp ışıklarının önünde, sen kalp yaptın ya... İşte o an dedim ki "ben bu kızı bırakmam" ❤️</p>
+<div class="gallery">
+<figure><img src="IMG_3161.jpeg"><figcaption>💖 Kalp kalbe, Gökdeniz ❤️ Aylin</figcaption></figure>
+<figure><img src="IMG_2936.jpeg"><figcaption>🥹 Seni sırtımda taşımak bile en güzel şey</figcaption></figure>
+<figure><img src="IMG_0236.jpeg"><figcaption>😍 Yan yana en güzel biziz</figcaption></figure>
+<figure><img src="IMG_7848.jpeg"><figcaption>🤍 Sarılınca dünya duruyor</figcaption></figure>
+</div></div>
+<div class="card"><div class="big-quote">"Aylin, sen benim hayatıma girdiğinden beri<br>hiçbir şey eskisi gibi değil.<br>Her şey daha güzel, daha anlamlı."</div><p style="text-align:center">- Gökdeniz'den Aylin'e</p></div>
+<div class="card"><h2>💌 1. Mektup: Seni Neden Bu Kadar Çok Seviyorum?</h2><div class="letter">Aylin'im,<br><br>Bunu buraya yazıyorum ki sadece sen bilesin. Ben seni öyle sıradan bir şekilde sevmiyorum. Ben seni, sabah uyanınca aklıma ilk gelen, gece yatmadan önce aklımdan son çıkan kişi olarak seviyorum.<br><br>Senin gülüşün benim en sevdiğim şarkıdan daha güzel. Senin sesin, kötü geçen bir günümü bile bir anda güzelleştiriyor.<br><br>Bazıları "sevgi geçer" diyor. Benimki geçmiyor. Benimki her gün biraz daha artıyor. Seni ilk tanıdığım günle bugünü kıyaslıyorum, bugün seni 100 kat daha fazla seviyorum.<br><br>Bu sevgi paha biçilemez. Ne parayla alınır, ne de başka bir şeyle ölçülür. Çünkü sen benim için her şeyden daha değerlisin.<br><br>Fotoğraflarımıza bakınca anlıyorum, biz gerçekten çok güzeliz.<br><br><b>- Sonsuza kadar senin olan Gökdeniz</b></div></div>
+<div class="card"><h2>❤️ Aylin'i Sevme Nedenlerim</h2><div class="reasons"><div class="reason"><b>😊</b><span>Gülüşü Dünyanın En Güzel Şeyi</span></div><div class="reason"><b>👀</b><span>Gözleri Baktıkça Kayboluyorum</span></div><div class="reason"><b>💬</b><span>Konuşması Bile Huzur Veriyor</span></div><div class="reason"><b>🤍</b><span>Kalbi Tertemiz, Çok İyi Biri</span></div><div class="reason"><b>✨</b><span>Yanında Kendimi En İyi Hissediyorum</span></div><div class="reason"><b>🔥</b><span>Onu Düşününce Kalbim Hızlı Atıyor</span></div></div></div>
+<div class="card"><h2>📖 Makale: Paha Biçilemez Bir Sevgi Nedir?</h2><p>Bazı sevgiler vardır, anlatılmaz. Gökdeniz'in Aylin'e olan sevgisi tam olarak böyledir.<br><br>Paha biçilemez bir sevgi demek; karşılık beklemeden sevmek demektir. Aylin üzgünken Gökdeniz'in de üzülmesi, Aylin gülünce Gökdeniz'in de gülmesi demektir.<br><br>Bu sevgi, bir hediye ile ölçülmez. Bu sevgi, her gün "iyi ki varsın" diyebilmektir. Sabah "günaydın" mesajı atmadan duramamaktır.<br><br>Gökdeniz, Aylin'i sadece sevgilisi olarak değil, en yakın arkadaşı, sırdaşı, her şeyi olarak seviyor.</p></div>
+<div class="card"><h2>💌 Söz Veriyorum</h2><div class="letter">Aylin, sana burada söz veriyorum:<br><br>1. Seni her gün daha çok seveceğim.<br>2. Üzgünken seni asla yalnız bırakmayacağım.<br>3. Ne olursa olsun senin yanında olacağım.<br>4. Seni kimseye değişmeyeceğim.<br>5. Bu site kapanırsa bile, benim sana olan sevgim kapanmayacak.<br><br>Sen benim en güzel şansımsın. İyi ki hayatıma girmişsin.<br><b>- Gökdeniz</b></div></div>
+<div class="counter"><div>Bu site açıldığından beri</div><b id="sayac">0</b><div>saniyedir Gökdeniz Aylin'i düşünüyor ❤️</div></div>
+<div class="card" style="text-align:center"><h2>Aylin, Bunu Okuyorsan...</h2><p style="font-size:18px"><b>Seni çok seviyorum.<br>İyi ki varsın.<br>İyi ki benimsin. ❤️</b></p><p>Gökdeniz - Sonsuza Dek</p></div>
+<div class="footer">© 2026 Gökdeniz ❤️ Aylin - Bu site kilitlidir, sadece bize özel. Şifre: 0825</div>
+</div></div>
 <script>
-// ============ DEĞİŞKENLER ============
-let x = 50, speed = 0, score = 0, playing = false;
-let left=false, right=false, fast=false, slow=false;
-let enemies = [], lines = [];
-let gameEl = document.getElementById('game');
-
-// ============ YOL ÇİZGİLERİ ============
-for(let i=0;i<6;i++){
-  let l = document.createElement('div');
-  l.className='line'; l.style.top = (i*90)+'px';
-  gameEl.appendChild(l); lines.push(l);
-}
-
-// ============ BAŞLAT ============
-function start(){
-  if(playing) return;
-  playing=true; score=0; speed=30; x=50; enemies=[];
-  document.querySelectorAll('.enemy').forEach(e=>e.remove());
-  document.getElementById('msg').innerText='';
-  document.getElementById('startBtn').innerText='🏁 OYUN DEVAM EDİYOR...';
-  requestAnimationFrame(loop);
-  setInterval(spawn, 900);
-}
-
-function spawn(){
-  if(!playing) return;
-  let e = document.createElement('div');
-  e.className='car enemy';
-  e.innerText = ['🚕','🚙','🚚','🚐','🚓'][Math.floor(Math.random()*5)];
-  let ex = 18 + Math.random()*60; // yol içinde
-  e.style.left = ex + '%'; e.style.top = '-100px';
-  gameEl.appendChild(e);
-  enemies.push({el:e, y:-100, x:ex});
-}
-
-// ============ OYUN DÖNGÜSÜ ============
-function loop(){
-  if(!playing) return;
-
-  // HIZ
-  if(fast) speed += 1.5;
-  if(slow) speed -= 2;
-  if(!fast && !slow) speed -= 0.3;
-  if(speed < 0) speed = 0;
-  if(speed > 160) speed = 160;
-
-  // DİREKSİYON
-  if(left) x -= 1.2 + speed/80;
-  if(right) x += 1.2 + speed/80;
-  if(x < 16) x = 16;
-  if(x > 78) x = 78;
-
-  // ARABAYI ÇİZ
-  let car = document.getElementById('myCar');
-  car.style.left = x + '%';
-
-  // YOL ÇİZGİSİ AKIYOR
-  lines.forEach(l=>{
-    let t = parseInt(l.style.top) + speed/8;
-    if(t > 520) t = -50;
-    l.style.top = t + 'px';
-  });
-
-  // DÜŞMANLAR GELİYOR
-  enemies.forEach((en, i)=>{
-    en.y += 3 + speed/15;
-    en.el.style.top = en.y + 'px';
-    // ÇARPTI MI?
-    if(en.y > 380 && en.y < 470 && Math.abs(en.x - x) < 9){
-      gameOver();
-    }
-    if(en.y > 560){ en.el.remove(); enemies.splice(i,1); score+=10; }
-  });
-
-  if(speed > 10) score += 1;
-
-  document.getElementById('score').innerText = score;
-  document.getElementById('speed').innerText = Math.floor(speed);
-  requestAnimationFrame(loop);
-}
-
-function gameOver(){
-  playing=false;
-  document.getElementById('msg').innerHTML = '💥 KAZA YAPTIN!<br>SKOR: '+score+'<br>Tekrar oyna!';
-  document.getElementById('msg').style.color='#ff2e7e';
-  document.getElementById('startBtn').innerText='🔁 TEKRAR OYNA';
-}
-
-// ============ KLAVYE ============
-document.addEventListener('keydown', e=>{
-  if(e.key==='ArrowLeft'||e.key==='a') left=true;
-  if(e.key==='ArrowRight'||e.key==='d') right=true;
-  if(e.key==='ArrowUp'||e.key==='w') fast=true;
-  if(e.key==='ArrowDown'||e.key==='s') slow=true;
-});
-document.addEventListener('keyup', e=>{
-  if(e.key==='ArrowLeft'||e.key==='a') left=false;
-  if(e.key==='ArrowRight'||e.key==='d') right=false;
-  if(e.key==='ArrowUp'||e.key==='w') fast=false;
-  if(e.key==='ArrowDown'||e.key==='s') slow=false;
-});
+function kontrol(){let g=document.getElementById('sifre').value;if(g==='0825'){document.getElementById('lock').style.display='none';document.getElementById('icerik').style.display='block';let h=document.getElementById('hearts');for(let i=0;i<25;i++){let s=document.createElement('span');s.innerText=['❤️','💖','💕','✨'][Math.floor(Math.random()*4)];s.style.left=Math.random()*100+'%';s.style.fontSize=(14+Math.random()*20)+'px';s.style.animationDuration=(3+Math.random()*5)+'s';s.style.animationDelay=(Math.random()*4)+'s';h.appendChild(s);}let start=Date.now();setInterval(()=>{document.getElementById('sayac').innerText=Math.floor((Date.now()-start)/1000)},1000);}else{document.getElementById('hata').innerText='❌ Yanlış şifre! Tekrar dene.';document.getElementById('sifre').value='';}}
+document.getElementById('sifre').addEventListener('keypress',function(e){if(e.key==='Enter')kontrol();});
 </script>
 </body>
 </html>

@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BİZ ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;min-height:100vh;
+font-family:Arial,sans-serif;
+background:linear-gradient(145deg,#210b22,#701b4c,#d44d7c);
+color:white;display:flex;align-items:center;
+justify-content:center;padding:20px;
+}
+.card{
+width:100%;max-width:420px;
+background:#ffffff18;
+border:1px solid #ffffff40;
+border-radius:28px;padding:28px;
+text-align:center;backdrop-filter:blur(12px);
+}
+h1{font-size:52px;margin:10px}
+p{color:#ffe0ed}
+input,button{
+width:100%;padding:16px;margin-top:13px;
+border:0;border-radius:14px;font-size:16px;
+}
+input{text-align:center}
+button{
+background:#ffb5d0;color:#541332;
+font-weight:bold;cursor:pointer;
+}
+button:active{transform:scale(.97)}
+#result{margin-top:20px;font-size:18px}
+.heart{font-size:35px}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="heart">💕</div>
+<h1>BİZ</h1>
+<p>İki kalp, tek oyun...</p>
+<p>Birbirimizi ne kadar tanıyoruz?</p>
+
+<input id="name" placeholder="Senin adın">
+<button onclick="createRoom()">❤️ Oda oluştur</button>
+
+<p>VEYA</p>
+<input id="code" placeholder="6 haneli oda kodu">
+<button onclick="joinRoom()">💌 Odaya katıl</button>
+
+<div id="result"></div>
+</div>
+
+<script>
+function createRoom(){
+let name=document.getElementById("name").value;
+if(!name){alert("Önce adını yaz ❤️");return;}
+let code=Math.floor(100000+Math.random()*900000);
+document.getElementById("result").innerHTML=
+"❤️ Merhaba "+name+"!<br>Oda kodun: <b>"+code+"</b><br>Bu kodu sevgiline gönder!";
+}
+function joinRoom(){
+let code=document.getElementById("code").value;
+if(code.length!==6){alert("6 haneli kod gir ❤️");return;}
+document.getElementById("result").innerHTML=
+"💕 Oda kodun: "+code+"<br>Online bağlantıyı birazdan ekleyeceğiz!";
+}
+</script>
+</body>
+</html>

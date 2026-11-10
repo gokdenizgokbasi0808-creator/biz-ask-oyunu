@@ -3,153 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BİZ 💕 CEZALI V2</title>
+<title>BİZİM KÖYÜMÜZ 💕</title>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#ff2e7e;color:white;display:flex;justify-content:center;min-height:100vh}
-.box{width:100%;max-width:480px;background:#ff5c9e;padding:22px;text-align:center}
-h1{font-size:42px;margin:10px 0 5px}input{width:100%;padding:14px;border-radius:14px;border:0;margin:8px 0;font-size:16px;text-align:center}
-button{width:100%;padding:14px;border:0;border-radius:14px;background:white;color:#ff2e7e;font-weight:800;font-size:16px;margin:8px 0;cursor:pointer}
-button.pink{background:#ff2e7e;color:white;border:2px solid white}
-.card{background:white;color:#333;border-radius:18px;padding:18px;margin:14px 0;text-align:left}
-.opt{background:#ffe6f0;padding:13px;border-radius:12px;margin:8px 0;cursor:pointer;font-weight:600}
-.opt.sel{background:#ff2e7e;color:white}
-.small{font-size:13px;opacity:.9}.big{font-size:26px;font-weight:800}
-#ceza{background:#fff;color:#ff2e7e;border-radius:18px;padding:20px;font-size:22px;font-weight:800}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#7ec850;color:#333;display:flex;justify-content:center;min-height:100vh}
+.box{width:100%;max-width:500px;background:#fff8e7;padding:16px;min-height:100vh}
+h1{margin:5px;text-align:center;font-size:30px}input{width:100%;padding:13px;border-radius:12px;border:1px solid #ddd;margin:7px 0;text-align:center;font-size:16px}
+button{width:100%;padding:13px;border:0;border-radius:12px;background:#ff2e7e;color:white;font-weight:800;font-size:15px;margin:6px 0;cursor:pointer}
+button.green{background:#2e9e4f}button.dark{background:#222}button.small{width:auto;padding:8px 12px;font-size:13px;margin:3px}
+.top{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.pill{background:#fff;border:2px solid #ffd166;padding:7px 10px;border-radius:20px;font-weight:800;font-size:13px}
+.card{background:white;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.tabs{display:flex;gap:6px}.tabs button{background:#ffe6f0;color:#ff2e7e}.tabs button.on{background:#ff2e7e;color:white}
+.grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.item{background:#f1f8e9;border-radius:12px;padding:10px;text-align:center;width:30%;cursor:pointer}
+.item b{font-size:26px;display:block}
+.house{font-size:42px;line-height:1.2;text-align:center;background:#ffe9c9;border-radius:16px;padding:14px;min-height:150px}
+.task{display:flex;justify-content:space-between;align-items:center;background:#fff3cd;padding:10px;border-radius:12px;margin:6px 0}
+.small{font-size:12px;color:#666;text-align:center}.done{opacity:.5;text-decoration:line-through}
 </style>
 </head>
 <body>
 <div class="box">
-<h1>💕 BİZ</h1>
-<div class="small">İki kalp, tek oyun - CEZALI VERSİYON V2 🏆</div>
+<h1>💕 BİZİM KÖYÜMÜZ 🏡</h1>
+<div class="small">Sadece ikiniz. 30 gün beraber yaşayın, evi döşeyin, 30. gün evlenin!</div>
+
 <div id="lobby">
 <input id="name" placeholder="İsmin (örn: Gökdeniz)">
-<button onclick="createRoom()">❤️ Oda Oluştur</button>
-<div class="small">VEYA</div>
-<input id="code" placeholder="Oda kodu">
-<button class="pink" onclick="joinRoom()">👉 Odaya Katıl</button>
-<button style="background:#222;color:white" onclick="sameDevice()">📱 Aynı Telefonda Oyna</button>
-<div id="info" class="small" style="margin-top:10px"></div>
+<button onclick="createRoom()">❤️ Köy Kur (Oda Oluştur)</button>
+<input id="code" placeholder="Köy Kodu">
+<button class="green" onclick="joinRoom()">👉 Köye Katıl</button>
+<button class="dark" onclick="sameDevice()">📱 Aynı Telefonda Oyna</button>
+<div id="info" class="small" style="margin-top:8px"></div>
 </div>
+
 <div id="game" style="display:none">
-<div id="status" class="small"></div>
-<div id="score" class="big"></div>
-<div class="card">
-<div id="qtext" style="font-size:19px;font-weight:700"></div>
-<div id="opts"></div>
+<div class="top">
+<div class="pill">🪙 <span id="coins">0</span></div>
+<div class="pill">🪵 <span id="wood">0</span></div>
+<div class="pill">🍎 <span id="apple">0</span></div>
+<div class="pill">🐟 <span id="fish">0</span></div>
+<div class="pill">📅 Gün <span id="day">1</span>/30</div>
+<div class="pill">❤️ <span id="love">0</span></div>
 </div>
-<button id="sendBtn" onclick="sendAnswer()">Cevabı Gönder ➡️</button>
-<div id="reveal" class="card" style="display:none"></div>
-<button id="nextBtn" style="display:none;background:#222;color:white" onclick="nextQ()">Sonraki Soru ➡️</button>
+<div class="small" id="names"></div>
+
+<div class="tabs">
+<button id="t1" class="on" onclick="tab('koy')">🌳 Köy</button>
+<button id="t2" onclick="tab('ev')">🏠 Evim</button>
+<button id="t3" onclick="tab('market')">🛒 Market</button>
+<button id="t4" onclick="tab('gorev')">✅ Görevler</button>
 </div>
-<div id="final" style="display:none">
-<h2 id="winner"></h2>
-<div id="ceza"></div>
-<p class="small">Ceza çekmeyen, ilişkiyi kaybeder 😏</p>
-<button onclick="location.reload()">Tekrar Oyna 🔁</button>
+
+<div id="koy" class="card">
+<b>🌳 Köy - Dokun ve Topla</b><br><span class="small">Ağaç kes, elma topla, balık tut. Hepsi para ediyor.</span>
+<div class="grid" id="trees"></div>
+<div style="display:flex;gap:6px">
+<button class="green" onclick="sellAll()">💰 Hepsini Sat (+ Para)</button>
+<button onclick="nextDay()">🌙 Günü Bitir ➡️</button>
+</div>
+<div class="small" id="msg"></div>
+</div>
+
+<div id="ev" class="card" style="display:none">
+<b>🏠 Evimiz</b><br><span class="small">Aldığınız eşyalar burada görünür. Evi beraber döşüyorsunuz.</span>
+<div class="house" id="houseView">🏠<br><span style="font-size:14px">Henüz boş... Marketten eşya alın!</span></div>
+<div class="small" id="houseList"></div>
+<button onclick="cleanHouse()">🧹 Evi Temizle (+15 🪙)</button>
+</div>
+
+<div id="market" class="card" style="display:none">
+<b>🛒 Market - Ev Eşyaları</b>
+<div class="grid" id="shop"></div>
+</div>
+
+<div id="gorev" class="card" style="display:none">
+<b>✅ Günlük Görevler</b><br><span class="small">Her gün yenilenir. Yapmazsan aşk puanı düşer.</span>
+<div id="tasks"></div>
+<div class="small">Her gün giriş yaparsan +50 🪙 bonus!</div>
+<button class="green" onclick="dailyBonus()">🎁 Günlük Giriş Bonusunu Al</button>
 </div>
 </div>
+</div>
+
 <script>
-const questions=[
-["En sevdiğin yemek ne?","Kebap","Pizza","Makarna","Mantı"],
-["İlk öpücük nerde olsun isterdin?","Deniz kenarı","Sinema","Park","Evde"],
-["En çok neye sinirleniyorsun?","Geç cevap","Yalan","İlgisizlik","Kıskançlık"],
-["En romantik şey ne?","Sarılmak","El ele gezmek","Sürpriz","Birlikte film"],
-["Kavga edince ne yaparsın?","Küserim","Konuşurum","Ağlarım","Kaçarım"],
-["En sevdiğin renk?","Kırmızı","Pembe","Siyah","Mavi"],
-["En büyük hayalin?","Evlenmek","Gezmek","Zengin olmak","Aile kurmak"],
-["En çok kimi kıskanıyorsun?","Eski sevgili","Arkadaş","Kimse","Herkes"],
-["İlk buluşmada ne giyersin?","Şık","Rahat","Spor","Elbise"],
-["En sevdiğin şarkı türü?","Pop","Rap","Arabesk","Slow"],
-["Sabah mı gece mi?","Sabah","Gece","İkisi de","Hiçbiri"],
-["En çok ne yersin?","Tatlı","Tuzlu","Acı","Hepsi"],
-["En korktuğun şey?","Ayrılmak","Yalnızlık","Karanlık","Yükseklik"],
-["En sevdiğin mevsim?","Yaz","Kış","İlkbahar","Sonbahar"],
-["Telefonuna en çok neye bakarsın?","Ona","TikTok","Oyun","Müzik"],
-["En çok neye gülersin?","Onun esprisi","Meme","Düşmek","Dizi"],
-["En romantik film?","Titanic","Aşk filmi","Komedi","Korku"],
-["En sevdiğin içecek?","Kola","Ayran","Kahve","Su"],
-["En çok neyi özlüyorsun?","Onu","Çocukluk","Tatil","Eski günler"],
-["En çok neye para harcarsın?","Yemek","Kıyafet","Oyun","Hediye"],
-["En iyi özelliğin?","Sadık","Eğlenceli","Dürüst","Romantik"],
-["En kötü özelliğin?","Kıskanç","İnatçı","Alıngan","Unutkan"],
-["Onu en çok ne mutlu eder?","İlgi","Hediye","Sarılma","Söz"],
-["Kavga sonrası ilk kim yazar?","Ben","O","Kimse","İkimiz"],
-["Onu ne kadar seviyorsun?","Çok","Deli gibi","Tarifsiz","Sonsuz"]
+let S={coins:100,wood:0,apple:0,fish:0,day:1,love:10,items:[],trees:[3,3,3,3,3,3],tasks:{},bonusTaken:false,dirty:0};
+let myName="",isHost=false,peer=null,conn=null,mode="online",otherName="Sevgilin",curTab="koy";
+let SHOP=[
+{id:"sofa",e:"🛋️",n:"Koltuk",p:120},
+{id:"table",e:"🪑",n:"Masa",p:80},
+{id:"bed",e:"🛏️",n:"Yatak",p:200},
+{id:"tv",e:"📺",n:"TV",p:250},
+{id:"plant",e:"🪴",n:"Çiçek",p:40},
+{id:"lamp",e:"💡",n:"Lamba",p:50},
+{id:"rug",e:"🧶",n:"Halı",p:70},
+{id:"fridge",e:"🧊",n:"Buzdolabı",p:300},
+{id:"cat",e:"🐱",n:"Kedi",p:150},
+{id:"dog",e:"🐶",n:"Köpek",p:150},
+{id:"ring",e:"💍",n:"Yüzük (30.Gün)",p:1000},
+{id:"car",e:"🚗",n:"Araba",p:800}
 ];
-const penalties=["🧊 Buz gibi su iç!","💃 1 dk dans et, video çek!","📱 Profil fotoğrafını 1 gün onun fotoğrafı yap!","🍫 Ona çikolata ısmarla!","🎤 Sesli mesajla şarkı söyle!","🤳 Birlikte selfie at!","💋 Alnından öpücük borcun var!","🧹 1 gün evi sen topla!","📞 5 dk boyunca sadece 'aşkım' diye konuş!","🍕 Bir sonraki yemek senden!"];
-let myName="", isHost=false, peer=null, conn=null, myAnswers=[], otherAnswers=[], qIndex=0, myScore=0, otherScore=0, selected=null, mode="online", otherName="Rakip";
-function show(id){document.getElementById('lobby').style.display='none';document.getElementById('game').style.display='none';document.getElementById('final').style.display='none';document.getElementById(id).style.display='block';}
-function renderQ(){
-document.getElementById('reveal').style.display='none';
-document.getElementById('nextBtn').style.display='none';
-document.getElementById('sendBtn').style.display='block';
-document.getElementById('status').innerText="Soru "+(qIndex+1)+" / "+questions.length;
-document.getElementById('score').innerText="Sen: "+myScore+" - "+otherName+": "+otherScore;
-document.getElementById('qtext').innerText=questions[qIndex][0];
-let h=""; selected=null;
-for(let i=1;i<=4;i++){h+='<div class="opt" onclick="pick(this,'+i+')">'+questions[qIndex][i]+'</div>'}
-document.getElementById('opts').innerHTML=h;
+let TASKS=[
+{id:"kes",t:"🌳 3 Ağaç Kes",r:30},
+{id:"elma",t:"🍎 3 Elma Topla",r:20},
+{id:"balik",t:"🐟 2 Balık Tut",r:25},
+{id:"sula",t:"💧 Çiçekleri Sula",r:15},
+{id:"besle",t:"🐱 Kediyi Besle",r:15}
+];
+function show(id){document.getElementById('lobby').style.display='none';document.getElementById('game').style.display='none';document.getElementById(id).style.display='block';}
+function save(){try{localStorage.setItem('bizimkoy',JSON.stringify(S));}catch(e){}}
+function load(){try{let d=localStorage.getItem('bizimkoy'); if(d) S=JSON.parse(d);}catch(e){}}
+function render(){
+document.getElementById('coins').innerText=S.coins;
+document.getElementById('wood').innerText=S.wood;
+document.getElementById('apple').innerText=S.apple;
+document.getElementById('fish').innerText=S.fish;
+document.getElementById('day').innerText=S.day;
+document.getElementById('love').innerText=S.love;
+document.getElementById('names').innerText=myName+" ❤️ "+otherName+" - Beraber yaşıyorsunuz";
+let th=""; let icons=["🌳","🌳","🍎","🍎","🐟","🐟"];
+for(let i=0;i<6;i++){th+='<div class="item" onclick="collect('+i+')"><b>'+icons[i]+'</b>'+(i<2?"Ağaç":i<4?"Elma Ağacı":"Göl")+'<br><span class="small">'+S.trees[i]+' kaldı<br>Topla!</span></div>'}
+document.getElementById('trees').innerHTML=th;
+let hv="🏠<br>"; if(S.items.length==0) hv+='<span style="font-size:14px">Henüz boş... Marketten eşya alın!</span>'; else {S.items.forEach(id=>{let it=SHOP.find(s=>s.id===id); if(it) hv+='<span>'+it.e+'</span> '})}
+document.getElementById('houseView').innerHTML=hv;
+document.getElementById('houseList').innerText="Evdeki Eşya Sayısı: "+S.items.length+" / 12 - Kirlilik: "+S.dirty+"%";
+let sh=""; SHOP.forEach(it=>{let has=S.items.includes(it.id); sh+='<div class="item"><b>'+it.e+'</b>'+it.n+'<br>'+it.p+' 🪙<br><button class="small" style="width:100%" onclick="buy(\''+it.id+'\')">'+(has?"✅ Var":"Satın Al")+'</button></div>'});
+document.getElementById('shop').innerHTML=sh;
+let tk=""; TASKS.forEach(t=>{let done=S.tasks[t.id]; tk+='<div class="task '+(done?"done":"")+'"><span>'+t.t+' (+'+t.r+' 🪙)</span><button class="small green" style="width:auto" onclick="doTask(\''+t.id+'\')">'+(done?"Yapıldı":"Yap")+'</button></div>'});
+document.getElementById('tasks').innerHTML=tk;
+if(S.day>=30){document.getElementById('msg').innerHTML="💍 30 GÜN BİTTİ! Artık evlisiniz! Tebrikler! 🎉🎉";}
+save();
 }
-function pick(el,i){document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');selected=i;}
-function sendAnswer(){
-if(selected==null) return alert("Bir şık seç kanka!");
-myAnswers[qIndex]=selected;
-document.getElementById('sendBtn').style.display='none';
-document.getElementById('status').innerText="Cevabın gitti... Karşı taraf bekleniyor...";
-if(mode==="same"){otherAnswers[qIndex]=Math.floor(Math.random()*4)+1; reveal();}
-else if(isHost){checkBoth();}
-else{conn.send({type:'answer',index:qIndex,ans:selected});}
+function tab(n){curTab=n; ['koy','ev','market','gorev'].forEach(x=>{document.getElementById(x).style.display=x===n?'block':'none'; document.getElementById('t'+( ['koy','ev','market','gorev'].indexOf(x)+1 )).classList.toggle('on',x===n);});}
+function sendAction(a){ if(mode==="same"||isHost){doAction(a);} else if(conn){conn.send({type:'action',a:a});} }
+function doAction(a){
+if(a.k==='collect'){let i=a.i; if(S.trees[i]<=0) return; S.trees[i]--; if(i<2) S.wood++; else if(i<4) S.apple++; else S.fish++; S.love+=1; document.getElementById('msg').innerText="Topladın! +1";}
+if(a.k==='sell'){let earn=S.wood*15+S.apple*10+S.fish*20; S.coins+=earn; S.wood=0; S.apple=0; S.fish=0; document.getElementById('msg').innerText="Sattın! +"+earn+" 🪙 kazandın!";}
+if(a.k==='buy'){let it=SHOP.find(s=>s.id===a.id); if(!it||S.items.includes(a.id)) return; if(S.coins<it.p){alert("Paran yetmiyor kanka! Önce ağaç kesip sat!"); return;} S.coins-=it.p; S.items.push(a.id); S.love+=5; document.getElementById('msg').innerText=it.n+" alındı! Evimize hayırlı olsun!";}
+if(a.k==='task'){let t=TASKS.find(x=>x.id===a.id); if(!t||S.tasks[a.id]) return; S.tasks[a.id]=true; S.coins+=t.r; S.love+=2;}
+if(a.k==='clean'){S.dirty=0; S.coins+=15;}
+if(a.k==='bonus'){if(S.bonusTaken){alert("Bugünkü bonusu aldın zaten!"); return;} S.bonusTaken=true; S.coins+=50;}
+if(a.k==='nextDay'){S.day++; S.trees=[3,3,3,3,3,3]; S.tasks={}; S.bonusTaken=false; S.dirty+=10; S.coins+=20; if(S.dirty>50) S.love-=5; document.getElementById('msg').innerText="Yeni gün! Gün "+S.day+" - +20 🪙 harçlık";}
+render(); syncState();
 }
-function checkBoth(){if(myAnswers[qIndex]!=null && otherAnswers[qIndex]!=null) revealHost();}
-function revealHost(){
-let same=myAnswers[qIndex]===otherAnswers[qIndex];
-if(same){myScore++; otherScore++;}
-conn.send({type:'reveal',index:qIndex,myAns:myAnswers[qIndex],otherAns:otherAnswers[qIndex],myScore:myScore,otherScore:otherScore,same:same});
-showReveal(myAnswers[qIndex],otherAnswers[qIndex],same);
-}
-function showReveal(myA,otA,same){
-let r=document.getElementById('reveal');
-r.style.display='block';
-r.innerHTML="<b>"+(same?"🎉 AYNI CEVAP! +1 puan":"😅 Farklı cevap")+"</b><br><br>Sen: "+questions[qIndex][myA]+"<br>"+otherName+": "+questions[qIndex][otA];
-document.getElementById('score').innerText="Sen: "+myScore+" - "+otherName+": "+otherScore;
-if(isHost || mode==="same"){document.getElementById('nextBtn').style.display='block';}
-else{document.getElementById('status').innerText="Diğer taraf Sonraki'ye basınca devam edecek...";}
-}
-function reveal(){let same=myAnswers[qIndex]===otherAnswers[qIndex]; if(same){myScore++; otherScore++;} showReveal(myAnswers[qIndex],otherAnswers[qIndex],same);}
-function nextQ(){
-if(qIndex>=questions.length-1){finish(); if(mode!=="same"&&isHost) conn.send({type:'finish',myScore:myScore,otherScore:otherScore}); return;}
-qIndex++;
-if(mode!=="same"&&isHost) conn.send({type:'next',index:qIndex});
-renderQ();
-}
-function finish(){
-show('final');
-let winner=myScore>=otherScore?"🏆 KAZANDIN!":"😭 KAYBETTİN!";
-let loser=myScore<otherScore?"Sen":(myScore>otherScore?otherName:"Berabere");
-let pen=penalties[Math.floor(Math.random()*penalties.length)];
-document.getElementById('winner').innerText=winner+" Skor: "+myScore+" - "+otherScore;
-document.getElementById('ceza').innerHTML="CEZA ⬇️<br><br>"+(myScore===otherScore?"Berabere! İkiniz de ceza çekin: "+pen:loser+" ceza çekecek: "+pen);
+function collect(i){sendAction({k:'collect',i:i});}
+function sellAll(){sendAction({k:'sell'});}
+function buy(id){sendAction({k:'buy',id:id});}
+function doTask(id){sendAction({k:'task',id:id});}
+function cleanHouse(){sendAction({k:'clean'});}
+function dailyBonus(){sendAction({k:'bonus'});}
+function nextDay(){sendAction({k:'nextDay'});}
+function syncState(){if(isHost&&conn){try{conn.send({type:'state',s:S});}catch(e){}} save();}
+function onData(d){
+if(d.type==='hello'){otherName=d.name; show('game'); render();}
+if(d.type==='action'){doAction(d.a);}
+if(d.type==='state'){S=d.s; render();}
+if(d.type==='join'){otherName=d.name;}
 }
 function createRoom(){
 myName=document.getElementById('name').value.trim(); if(!myName) return alert("İsmini yaz!");
 isHost=true; let code=Math.random().toString(36).substring(2,6).toLowerCase();
-document.getElementById('info').innerHTML="Oda kodun: <b style='font-size:24px'>"+code+"</b><br>Bu kodu sevgiline at! Bekleniyor...";
+document.getElementById('info').innerHTML="Köy Kodun: <b style='font-size:26px'>"+code+"</b><br>Bu kodu sevgiline at! Bekleniyor...";
 peer=new Peer(code);
-peer.on('connection',c=>{conn=c; otherName="Sevgilin"; conn.on('data',onData); document.getElementById('info').innerHTML="Bağlandı! Oyun başlıyor..."; show('game'); renderQ();});
+peer.on('connection',c=>{conn=c; conn.on('data',onData); conn.send({type:'state',s:S}); show('game'); render();});
+peer.on('error',()=>{alert("Bağlantı hatası, aynı telefonda dene!");});
 }
 function joinRoom(){
 myName=document.getElementById('name').value.trim(); let code=document.getElementById('code').value.trim().toLowerCase(); if(!myName||!code) return alert("İsim + kod lazım!");
-peer=new Peer(); peer.on('open',()=>{conn=peer.connect(code); conn.on('open',()=>{conn.send({type:'hello',name:myName}); show('game'); document.getElementById('status').innerText="Bağlandın! Oda sahibi başlatıyor...";}); conn.on('data',onData);});
+peer=new Peer(); peer.on('open',()=>{conn=peer.connect(code); conn.on('open',()=>{conn.send({type:'hello',name:myName}); show('game'); render();}); conn.on('data',onData);});
+peer.on('error',()=>{alert("Köy bulunamadı! Kodu kontrol et, küçük harfle yaz.");});
 }
-function onData(d){
-if(d.type==='hello'){otherName=d.name; show('game'); renderQ();}
-if(d.type==='answer'){otherAnswers[d.index]=d.ans; checkBoth();}
-if(d.type==='reveal'){myScore=d.otherScore; otherScore=d.myScore; showReveal(myAnswers[d.index],d.myAns,d.same);}
-if(d.type==='next'){qIndex=d.index; renderQ();}
-if(d.type==='finish'){myScore=d.otherScore; otherScore=d.myScore; finish();}
-}
-function sameDevice(){myName=document.getElementById('name').value.trim()||"Sen"; otherName="Sevgilin"; mode="same"; show('game'); renderQ();}
+function sameDevice(){myName=document.getElementById('name').value.trim()||"Sen"; otherName="Sevgilin"; mode="same"; load(); show('game'); render();}
+load(); render();
 </script>
 </body>
 </html>

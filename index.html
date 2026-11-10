@@ -3,69 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gökdeniz ❤️ Aylin - Özel</title>
+<title>Gökdeniz ❤️ Aylin</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600;800&display=swap');
-  *{box-sizing:border-box} body{margin:0;font-family:'Poppins',sans-serif;background:#fff5f7;color:#2d2d2d;overflow-x:hidden}
-  #lock{position:fixed;inset:0;background:linear-gradient(135deg,#ff2e7e,#ff6a9a);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
-  .lock-box{background:white;width:100%;max-width:380px;border-radius:28px;padding:28px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3)}
-  .lock-box h1{font-family:'Playfair Display',serif;font-size:30px;margin:10px 0;color:#ff2e7e}
-  .lock-box input{width:100%;padding:16px;font-size:22px;text-align:center;letter-spacing:8px;border:2px solid #ffd6e3;border-radius:14px;outline:none;margin:14px 0}
-  .lock-box button{width:100%;padding:15px;background:#ff2e7e;color:white;border:0;border-radius:14px;font-size:17px;font-weight:800}
-  #hata{color:red;font-size:13px;font-weight:700;min-height:18px}
-  #icerik{display:none}
-  .hearts{position:fixed;inset:0;pointer-events:none;z-index:0}
-  .hearts span{position:absolute;animation:fall linear infinite;opacity:.7}
-  @keyframes fall{0%{transform:translateY(-10vh) rotate(0)}100%{transform:translateY(110vh) rotate(360deg)}}
-  .wrap{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:18px}
-  .hero{text-align:center;padding:28px 16px 20px;background:linear-gradient(135deg,#ff2e7e,#ff6a9a,#ffb3c6);color:white;border-radius:28px;box-shadow:0 15px 40px rgba(255,46,126,.35)}
-  .hero h1{font-family:'Playfair Display',serif;font-size:38px;line-height:1.1;margin:8px 0}
-  .badge{display:inline-block;background:white;color:#ff2e7e;padding:8px 18px;border-radius:100px;font-weight:800;font-size:12px}
-  .card{background:white;border-radius:22px;padding:22px;margin:16px 0;box-shadow:0 8px 25px rgba(0,0,0,.07)}
-  .card h2{margin:0 0 10px;font-size:20px;color:#ff2e7e}
-  .card p{line-height:1.8;font-size:15.5px;color:#444}
-  .big-quote{text-align:center;font-family:'Playfair Display',serif;font-size:24px;line-height:1.4}
-  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .gallery img{width:100%;height:240px;object-fit:cover;border-radius:16px}
-  .gallery figure{margin:0}
-  .gallery figcaption{text-align:center;font-size:12px;color:#888;padding:6px}
-  .main-photo{width:100%;height:360px;object-fit:cover;border-radius:18px}
-  .reasons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .reason{background:#fff0f4;border:1px solid #ffd6e3;padding:14px;border-radius:18px;text-align:center}
-  .reason b{font-size:26px;display:block}
-  .reason span{font-size:13px;font-weight:600}
-  .letter{background:#fffdf5;border:2px dashed #ffb3c6;padding:20px;border-radius:18px;line-height:1.9;font-size:15.5px}
-  .counter{text-align:center;background:#2d2d2d;color:white;border-radius:22px;padding:20px}
-  .counter b{font-size:30px;color:#ff6a9a}
-  .footer{text-align:center;font-size:12px;color:#999;padding:20px}
-  @media(max-width:500px){.gallery{grid-template-columns:1fr}.gallery img{height:300px}.main-photo{height:320px}}
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700;1,900&family=Poppins:wght@300;400;600;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0} body{font-family:'Poppins',sans-serif;background:#0f0f1a;color:#fff;overflow-x:hidden}
+#lock{position:fixed;inset:0;background:radial-gradient(circle at 50% 30%,#ff2e7e,#3b0a1e);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+.lock-box{background:rgba(255,255,255,.95);width:100%;max-width:380px;border-radius:30px;padding:30px;text-align:center;color:#222;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.lock-box h1{font-family:'Playfair Display',serif;font-size:32px;color:#ff2e7e}
+.lock-box input{width:100%;padding:16px;font-size:24px;text-align:center;letter-spacing:10px;border:2px solid #ffd6e3;border-radius:16px;margin:16px 0;outline:none}
+.lock-box button{width:100%;padding:16px;background:linear-gradient(90deg,#ff2e7e,#ff8a00);color:#fff;border:0;border-radius:16px;font-size:17px;font-weight:800}
+#icerik{display:none}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;background:radial-gradient(circle at 50% 0%,#ff2e7e 0%,#7a1035 45%,#0f0f1a 100%);position:relative}
+.hero h1{font-family:'Playfair Display',serif;font-size:58px;line-height:.95;font-style:italic}
+.hero h1 span{font-size:70px}
+.hero p{margin-top:16px;opacity:.9;line-height:1.6}
+.scroll{margin-top:30px;background:#fff;color:#ff2e7e;padding:12px 22px;border-radius:100px;font-weight:800;animation:bounce 1.5s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+.wrap{max-width:800px;margin:0 auto;padding:18px}
+.section{margin:28px 0}
+.card{background:#1c1c2e;border:1px solid rgba(255,255,255,.1);border-radius:28px;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.card h2{color:#ff6a9a;font-size:22px;margin-bottom:12px}
+.card p{line-height:1.9;color:#ddd;font-size:15.5px}
+.big{font-family:'Playfair Display',serif;font-size:28px;line-height:1.3;text-align:center;font-style:italic}
+.polaroid{background:#fff;color:#222;padding:12px 12px 40px;border-radius:6px;transform:rotate(-2deg);box-shadow:0 20px 40px rgba(0,0,0,.5);margin:16px 0;position:relative}
+.polaroid:nth-child(even){transform:rotate(2deg)}
+.polaroid img{width:100%;height:360px;object-fit:cover;border-radius:4px;background:#eee;display:block}
+.polaroid b{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-family:'Playfair Display',serif;font-size:17px}
+.bar{height:18px;background:#333;border-radius:100px;overflow:hidden;margin:12px 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff2e7e,#ffb800);border-radius:100px;transition:2s}
+.love-btn{width:100%;padding:18px;border:0;border-radius:18px;font-size:19px;font-weight:800;background:#ff2e7e;color:#fff;margin-top:12px}
+.love-btn:last-child{background:#222;border:1px solid #444}
+.letter{background:#fff8e6;color:#333;padding:22px;border-radius:20px;line-height:1.9;font-size:15.5px}
+.footer{text-align:center;color:#777;font-size:12px;padding:20px}
 </style>
 </head>
 <body>
-<div id="lock"><div class="lock-box"><div style="font-size:50px">🔒❤️</div><h1>Gökdeniz ❤️ Aylin</h1><p style="font-size:14px;color:#666">Bu site özeldir.<br>Sadece bizim bildiğimiz şifreyi gir.</p><input id="sifre" type="password" inputmode="numeric" placeholder="••••" maxlength="4"><div id="hata"></div><button onclick="kontrol()">💖 KİLİDİ AÇ</button><div style="font-size:12px;color:#999;margin-top:10px">İpucu: Gökdeniz'in doğum günü 🥳</div></div></div>
-<div id="icerik"><div class="hearts" id="hearts"></div><div class="wrap">
-<div class="hero"><div class="badge">🔒 SADECE BİZE ÖZEL - ŞİFRE: 0825</div><h1>Gökdeniz<br>❤️<br>Aylin</h1><p>Bu site sadece senin için Aylin.<br>Şifreyi bilen girebilir.</p></div>
-<div class="card"><h2>📸 Bizim En Güzel Anılarımız</h2>
-<img class="main-photo" src="IMG_3161.jpeg" alt="Biz">
-<p style="text-align:center;font-size:13px">Bu kalp ışıklarının önünde, sen kalp yaptın ya... İşte o an dedim ki "ben bu kızı bırakmam" ❤️</p>
-<div class="gallery">
-<figure><img src="IMG_3161.jpeg"><figcaption>💖 Kalp kalbe, Gökdeniz ❤️ Aylin</figcaption></figure>
-<figure><img src="IMG_2936.jpeg"><figcaption>🥹 Seni sırtımda taşımak bile en güzel şey</figcaption></figure>
-<figure><img src="IMG_0236.jpeg"><figcaption>😍 Yan yana en güzel biziz</figcaption></figure>
-<figure><img src="IMG_7848.jpeg"><figcaption>🤍 Sarılınca dünya duruyor</figcaption></figure>
-</div></div>
-<div class="card"><div class="big-quote">"Aylin, sen benim hayatıma girdiğinden beri<br>hiçbir şey eskisi gibi değil.<br>Her şey daha güzel, daha anlamlı."</div><p style="text-align:center">- Gökdeniz'den Aylin'e</p></div>
-<div class="card"><h2>💌 1. Mektup: Seni Neden Bu Kadar Çok Seviyorum?</h2><div class="letter">Aylin'im,<br><br>Bunu buraya yazıyorum ki sadece sen bilesin. Ben seni öyle sıradan bir şekilde sevmiyorum. Ben seni, sabah uyanınca aklıma ilk gelen, gece yatmadan önce aklımdan son çıkan kişi olarak seviyorum.<br><br>Senin gülüşün benim en sevdiğim şarkıdan daha güzel. Senin sesin, kötü geçen bir günümü bile bir anda güzelleştiriyor.<br><br>Bazıları "sevgi geçer" diyor. Benimki geçmiyor. Benimki her gün biraz daha artıyor. Seni ilk tanıdığım günle bugünü kıyaslıyorum, bugün seni 100 kat daha fazla seviyorum.<br><br>Bu sevgi paha biçilemez. Ne parayla alınır, ne de başka bir şeyle ölçülür. Çünkü sen benim için her şeyden daha değerlisin.<br><br>Fotoğraflarımıza bakınca anlıyorum, biz gerçekten çok güzeliz.<br><br><b>- Sonsuza kadar senin olan Gökdeniz</b></div></div>
-<div class="card"><h2>❤️ Aylin'i Sevme Nedenlerim</h2><div class="reasons"><div class="reason"><b>😊</b><span>Gülüşü Dünyanın En Güzel Şeyi</span></div><div class="reason"><b>👀</b><span>Gözleri Baktıkça Kayboluyorum</span></div><div class="reason"><b>💬</b><span>Konuşması Bile Huzur Veriyor</span></div><div class="reason"><b>🤍</b><span>Kalbi Tertemiz, Çok İyi Biri</span></div><div class="reason"><b>✨</b><span>Yanında Kendimi En İyi Hissediyorum</span></div><div class="reason"><b>🔥</b><span>Onu Düşününce Kalbim Hızlı Atıyor</span></div></div></div>
-<div class="card"><h2>📖 Makale: Paha Biçilemez Bir Sevgi Nedir?</h2><p>Bazı sevgiler vardır, anlatılmaz. Gökdeniz'in Aylin'e olan sevgisi tam olarak böyledir.<br><br>Paha biçilemez bir sevgi demek; karşılık beklemeden sevmek demektir. Aylin üzgünken Gökdeniz'in de üzülmesi, Aylin gülünce Gökdeniz'in de gülmesi demektir.<br><br>Bu sevgi, bir hediye ile ölçülmez. Bu sevgi, her gün "iyi ki varsın" diyebilmektir. Sabah "günaydın" mesajı atmadan duramamaktır.<br><br>Gökdeniz, Aylin'i sadece sevgilisi olarak değil, en yakın arkadaşı, sırdaşı, her şeyi olarak seviyor.</p></div>
-<div class="card"><h2>💌 Söz Veriyorum</h2><div class="letter">Aylin, sana burada söz veriyorum:<br><br>1. Seni her gün daha çok seveceğim.<br>2. Üzgünken seni asla yalnız bırakmayacağım.<br>3. Ne olursa olsun senin yanında olacağım.<br>4. Seni kimseye değişmeyeceğim.<br>5. Bu site kapanırsa bile, benim sana olan sevgim kapanmayacak.<br><br>Sen benim en güzel şansımsın. İyi ki hayatıma girmişsin.<br><b>- Gökdeniz</b></div></div>
-<div class="counter"><div>Bu site açıldığından beri</div><b id="sayac">0</b><div>saniyedir Gökdeniz Aylin'i düşünüyor ❤️</div></div>
-<div class="card" style="text-align:center"><h2>Aylin, Bunu Okuyorsan...</h2><p style="font-size:18px"><b>Seni çok seviyorum.<br>İyi ki varsın.<br>İyi ki benimsin. ❤️</b></p><p>Gökdeniz - Sonsuza Dek</p></div>
-<div class="footer">© 2026 Gökdeniz ❤️ Aylin - Bu site kilitlidir, sadece bize özel. Şifre: 0825</div>
-</div></div>
+<div id="lock"><div class="lock-box"><div style="font-size:60px">🔐❤️</div><h1>Gökdeniz ❤️ Aylin</h1><p style="color:#666;font-size:14px;margin-top:8px">Bu site sadece Aylin'e özel.<br>Şifreyi bilmeyen giremez.</p><input id="sifre" type="password" inputmode="numeric" placeholder="••••" maxlength="4"><div id="hata" style="color:red;font-weight:700;min-height:20px"></div><button onclick="kontrol()">💖 KİLİDİ AÇ</button><p style="font-size:12px;color:#999;margin-top:10px">İpucu: Gökdeniz'in doğum günü</p></div></div>
+
+<div id="icerik">
+<div class="hero">
+<div style="background:#fff;color:#ff2e7e;padding:8px 18px;border-radius:100px;font-weight:800;font-size:12px">✨ SADECE BİZE ÖZEL • 0825 ✨</div>
+<h1 style="margin-top:20px">Gökdeniz<br><span>❤️</span><br>Aylin</h1>
+<p>Bu siteyi gece gündüz senin için yaptım.<br>Aşağı kaydır, hepsi senin için...</p>
+<div class="scroll">👇 AŞAĞI KAYDIR 👇</div>
+</div>
+
+<div class="wrap">
+<div class="section card"><div class="big">"Aylin gülünce<br>benim dünyam güzelleşiyor."</div><p style="text-align:center;margin-top:12px">— Gökdeniz</p></div>
+
+<div class="section"><h2 style="text-align:center;font-family:'Playfair Display',serif;font-size:28px;margin-bottom:6px">📸 Bizim Hikayemiz</h2><p style="text-align:center;color:#aaa;font-size:13px">Fotoğrafa basılı tut, büyür</p>
+
+<div class="polaroid"><img src="IMG_3161.jpeg" onerror="this.src='IMG_3161.JPG'"><b>❤️ Kalp kalbe - O gece</b></div>
+<div class="polaroid"><img src="IMG_2936.jpeg" onerror="this.src='IMG_2936.JPG'"><b>🥹 Seni taşımak bile güzel</b></div>
+<div class="polaroid"><img src="IMG_0236.jpeg" onerror="this.src='IMG_0236.JPG'"><b>😍 Yan yana en güzel biziz</b></div>
+<div class="polaroid"><img src="IMG_7848.jpeg" onerror="this.src='IMG_7848.JPG'"><b>🤍 Sarılınca dünya duruyor</b></div>
+</div>
+
+<div class="section card"><h2>❤️ Aşk Ölçer</h2><p>Gökdeniz'in Aylin'e olan aşkı ölçülüyor...</p><div class="bar"><i id="bar"></i></div><b id="yuzde" style="font-size:28px;color:#ff6a9a">%0</b><p style="margin-top:8px">Sonuç: Bu aşk ölçülemiyor, sonsuz! ♾️</p></div>
+
+<div class="section"><div class="letter"><h2 style="color:#ff2e7e">💌 Aylin'e Mektup</h2><br>Aylin'im,<br><br>Ben seni öyle sıradan sevmiyorum. Sabah uyanınca aklıma ilk gelen, gece yatmadan önce son düşündüğüm kişisin.<br><br>Senin gülüşün benim en sevdiğim şarkıdan daha güzel. Senin sesin kötü günümü bile güzelleştiriyor.<br><br>Bazıları sevgi geçer diyor, benimki geçmiyor. Her gün biraz daha artıyor. Bugün seni ilk günkünden 100 kat daha fazla seviyorum.<br><br>Bu site kapanırsa bile, benim sana olan sevgim kapanmayacak.<br><br><b>- Sonsuza kadar senin Gökdeniz</b></div></div>
+
+<div class="section card" style="text-align:center"><h2>💖 Son Bir Soru</h2><p style="font-size:18px">Aylin, sen de beni seviyor musun?</p><button class="love-btn" onclick="evet()">💖 EVET, ÇOK SEVİYORUM 💖</button><button class="love-btn" onclick="hayir(this)">Hayır</button><p id="sonuc" style="margin-top:14px;font-size:18px;font-weight:800;color:#ff6a9a"></p></div>
+
+<div class="footer">© 2026 Gökdeniz ❤️ Aylin - Sonsuza Dek<br>Şifre: 0825</div>
+</div>
+</div>
+
 <script>
-function kontrol(){let g=document.getElementById('sifre').value;if(g==='0825'){document.getElementById('lock').style.display='none';document.getElementById('icerik').style.display='block';let h=document.getElementById('hearts');for(let i=0;i<25;i++){let s=document.createElement('span');s.innerText=['❤️','💖','💕','✨'][Math.floor(Math.random()*4)];s.style.left=Math.random()*100+'%';s.style.fontSize=(14+Math.random()*20)+'px';s.style.animationDuration=(3+Math.random()*5)+'s';s.style.animationDelay=(Math.random()*4)+'s';h.appendChild(s);}let start=Date.now();setInterval(()=>{document.getElementById('sayac').innerText=Math.floor((Date.now()-start)/1000)},1000);}else{document.getElementById('hata').innerText='❌ Yanlış şifre! Tekrar dene.';document.getElementById('sifre').value='';}}
-document.getElementById('sifre').addEventListener('keypress',function(e){if(e.key==='Enter')kontrol();});
+function kontrol(){let g=document.getElementById('sifre').value;if(g==='0825'){document.getElementById('lock').style.display='none';document.getElementById('icerik').style.display='block';setTimeout(()=>{document.getElementById('bar').style.width='100%';let s=0;let t=setInterval(()=>{s+=2;if(s>=100){s=100;clearInterval(t)}document.getElementById('yuzde').innerText='%'+s},30)},500);window.scrollTo(0,0)}else{document.getElementById('hata').innerText='❌ Yanlış şifre!';document.getElementById('sifre').value='';}}
+document.getElementById('sifre').addEventListener('keypress',e=>{if(e.key==='Enter')kontrol()});
+function evet(){document.getElementById('sonuc').innerText='🎉 BİLİYORDUM! Ben de seni çok seviyorum! ❤️❤️❤️';for(let i=0;i<50;i++){let d=document.createElement('div');d.innerText=['❤️','💖','💕','✨','🥰'][Math.floor(Math.random()*5)];d.style.position='fixed';d.style.left=Math.random()*100+'vw';d.style.top='-20px';d.style.fontSize='30px';d.style.zIndex=999;document.body.appendChild(d);let y=-20;let it=setInterval(()=>{y+=8;d.style.top=y+'px';if(y>window.innerHeight){clearInterval(it);d.remove()}},30)}}
+function hayir(btn){btn.style.position='absolute';btn.style.left=Math.random()*60+'%';btn.style.top=Math.random()*60+'%';btn.innerText='Beni yakalayamazsın 😜'}
 </script>
 </body>
 </html>
